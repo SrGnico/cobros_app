@@ -1,11 +1,12 @@
 import 'package:cobros_app/models/product.dart';
-import 'package:cobros_app/services/database_delper.dart';
 import 'package:cobros_app/widgets/product_cart_item.dart';
 import 'package:flutter/material.dart';
 
 class FutureProductList extends StatelessWidget {
+
+  final list;
   final String? title;
-  const FutureProductList({super.key, this.title});
+  const FutureProductList({super.key, this.title, this.list});
 
   @override
   Widget build(BuildContext context){
@@ -25,7 +26,7 @@ class FutureProductList extends StatelessWidget {
         ),
         Expanded(
           child: FutureBuilder(
-            future: DatabaseHelper.getAllProducts(),
+            future: list,
             builder: (context,AsyncSnapshot<List<Product>?> snapshot){
               if(snapshot.connectionState == ConnectionState.waiting){
                 return const Center(child: CircularProgressIndicator());

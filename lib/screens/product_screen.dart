@@ -30,22 +30,22 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 150,
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Productos',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
-              'Todos',
+              selectedCategoria == '' ? 'Todos' : selectedCategoria,
               maxLines: 1,
-              style: TextStyle(
-                fontSize: 90,
+              style: const TextStyle(
+                fontSize: 80,
                 fontWeight: FontWeight.w500
               ),
             ),
@@ -85,13 +85,15 @@ class _ProductScreenState extends State<ProductScreen> {
                   ), 
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancelar'),
+                      onPressed: (){
+                        setState(() {
+                          list = DatabaseHelper.getAllProducts();
+                          context.pop();
+                        });
+                      },
+                      child: const Text('Limpiar filtros'),
                     ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'OK'),
-                      child: const Text('Filtrar'),
-                    ),
+                   
                   ],
                 )
                 
@@ -108,7 +110,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-      body: const FutureProductList(),
+      body: FutureProductList(list: list,),
       floatingActionButton: 
         IconButton(
           onPressed: () {

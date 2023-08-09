@@ -24,7 +24,7 @@ class RecordScreen extends StatelessWidget {
               'Todos',
               maxLines: 1,
               style: TextStyle(
-                fontSize: 90,
+                fontSize: 80,
                 fontWeight: FontWeight.w500
               ),
             ),

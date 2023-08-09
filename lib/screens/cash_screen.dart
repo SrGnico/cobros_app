@@ -40,7 +40,7 @@ class _CashScreenState extends State<CashScreen> {
               '\$ $total',
               maxLines: 1,
               style: const TextStyle(
-                fontSize: 90,
+                fontSize: 80,
                 fontWeight: FontWeight.w500
               ),
             ),
