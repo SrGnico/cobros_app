@@ -4,11 +4,9 @@ import 'package:cobros_app/services/database_delper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:sqflite/sqflite.dart';
 
 
 class AddProductScreen extends StatefulWidget {
-
 
   const AddProductScreen({super.key});
 

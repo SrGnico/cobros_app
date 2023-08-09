@@ -72,15 +72,19 @@ class DatabaseHelper {
 
   }
 
-   static Future getProductByCategoria(String categoria) async{
+   static Future<List<Product>?> getProductByCategoria(String categoria) async{
 
     final db = await _getDB();
 
-    return await db.query(
-      'Products',
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Productos',
       where: 'categoria = ?',
       whereArgs: [categoria]
     );
+
+    if(maps.isEmpty){return null;}
+
+    return List.generate(maps.length, (index) => Product.fromJson(maps[index]));
 
   }
 
