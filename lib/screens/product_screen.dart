@@ -87,6 +87,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     TextButton(
                       onPressed: (){
                         setState(() {
+                          selectedCategoria = '';
                           list = DatabaseHelper.getAllProducts();
                           context.pop();
                         });
