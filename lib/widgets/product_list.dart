@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
   final List<Product> list;
-  final String? title;
-  const ProductList({super.key, this.title, required this.list});
+  final String title;
+  const ProductList({super.key, required this.title, required this.list});
 
   @override
   State<ProductList> createState() => _ProductListState();
@@ -18,10 +18,10 @@ class _ProductListState extends State<ProductList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 20),
-        (widget.title != '')?const SizedBox():
+        (widget.title == '')?const SizedBox():
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Text(widget.title!,
+          child: Text(widget.title,
             style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w400,
