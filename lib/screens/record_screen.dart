@@ -1,3 +1,4 @@
+import 'package:cobros_app/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 class RecordScreen extends StatelessWidget {
@@ -7,6 +8,7 @@ class RecordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(child: Text('Record Screen')),
+      bottomNavigationBar: BottomBar(currentPage: 0),
     );
   }
 }
