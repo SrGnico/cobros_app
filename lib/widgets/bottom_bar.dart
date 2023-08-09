@@ -16,6 +16,8 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: widget.currentPage,
+      selectedItemColor:Colors.teal,
+      selectedIconTheme: const IconThemeData(size: 35),
       onTap:(value) {
         context.goNamed('$value');
       },

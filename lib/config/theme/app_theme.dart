@@ -5,6 +5,7 @@ class AppTheme {
   ThemeData theme(){
     return ThemeData(
       useMaterial3: true,
+      colorSchemeSeed: Colors.teal
     );
 
   }

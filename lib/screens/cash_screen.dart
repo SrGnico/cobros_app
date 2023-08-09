@@ -1,29 +1,45 @@
+import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
+import 'package:cobros_app/widgets/product_list.dart';
 import 'package:flutter/material.dart';
 
-class CashScreen extends StatelessWidget {
+class CashScreen extends StatefulWidget {
+
+
   const CashScreen({super.key});
 
   @override
+  State<CashScreen> createState() => _CashScreenState();
+}
+
+class _CashScreenState extends State<CashScreen> {
+  int total = 0;
+  List<Product> cart = [];
+
+  @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         toolbarHeight: 150,
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Cobros',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
-              '\$13200',
+              '\$ $total',
               maxLines: 1,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 90,
                 fontWeight: FontWeight.w500
               ),
@@ -53,7 +69,7 @@ class CashScreen extends StatelessWidget {
 
 
 
-      body:const Center(child: Text('Cash Screen')),
+      body:ProductList(title: 'Carrito', list: cart),
       bottomNavigationBar: const BottomBar(currentPage: 1),
     );
   }

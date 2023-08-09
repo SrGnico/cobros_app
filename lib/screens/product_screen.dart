@@ -1,8 +1,22 @@
+import 'package:cobros_app/models/product.dart';
+import 'package:cobros_app/services/database_delper.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
+import 'package:cobros_app/widgets/future_product_list.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
+
   const ProductScreen({super.key});
+
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+
+Future<List<Product>?> list = DatabaseHelper.getAllProducts();
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +48,11 @@ class ProductScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
             child: IconButton(
-              onPressed: () {
-                
-              }, 
+              onPressed: () {}, 
               icon: const Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Icon(
-                  Icons.sort_rounded,
+                  Icons.sort_by_alpha_rounded,
                   color: Colors.teal,
                   size: 65,
                 ),
@@ -49,7 +61,21 @@ class ProductScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(child: Text('Product Screen')),
+      body: const FutureProductList(),
+      floatingActionButton: 
+        IconButton(
+          onPressed: () {
+            context.goNamed('add');
+          }, 
+          icon: const Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Icon(
+              Icons.add,
+              color: Colors.teal,
+              size: 65,
+              ),
+            )
+          ),
       bottomNavigationBar: const BottomBar(currentPage: 2),
     );
   }

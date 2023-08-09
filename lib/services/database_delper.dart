@@ -5,13 +5,13 @@ import 'package:path/path.dart';
 class DatabaseHelper {
 
   static const int _version = 1;
-  static const String _dbName = 'Products.db';
+  static const String _dbName = 'Productos.db';
 
   static Future<Database> _getDB() async {
 
     return openDatabase(join(await getDatabasesPath(),_dbName),
       onCreate: (db, version) async =>
-      await db.execute('CREATE TABLE Products(codigo STRING PRIMARY KEY, descripcion TEXT NOT NULL,categoria TEXT NOT NULL, precio TEXT NOT NULL);'), version: _version,
+      await db.execute('CREATE TABLE Productos(codigo TEXT PRIMARY KEY, descripcion TEXT NOT NULL,categoria TEXT NOT NULL, precio TEXT NOT NULL);'), version: _version,
     );
   }
 
@@ -19,7 +19,7 @@ class DatabaseHelper {
     final db = await _getDB();
 
     return await db.insert(
-      'Products', 
+      'Productos', 
       product.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace
     );
@@ -29,7 +29,7 @@ class DatabaseHelper {
     final db = await _getDB();
 
     return await db.update(
-      'Products',
+      'Productos',
       product.toJson(),
       where: 'codigo = ?',
       whereArgs: [product.codigo],
@@ -41,7 +41,7 @@ class DatabaseHelper {
     final db = await _getDB();
 
     return await db.delete(
-      'Products',
+      'Productos',
       where: 'codigo = ?',
       whereArgs: [product.codigo]
     );
@@ -51,7 +51,7 @@ class DatabaseHelper {
 
     final db = await _getDB();
 
-    final List<Map<String, dynamic>> maps = await db.query('Products');
+    final List<Map<String, dynamic>> maps = await db.query('Productos');
 
     if(maps.isEmpty){return null;}
 
@@ -65,11 +65,30 @@ class DatabaseHelper {
     final db = await _getDB();
 
     return await db.query(
-      'Products',
+      'Productos',
       where: 'codigo = ?',
       whereArgs: [codigo]
     );
 
   }
 
+   static Future getProductByCategoria(String categoria) async{
+
+    final db = await _getDB();
+
+    return await db.query(
+      'Products',
+      where: 'categoria = ?',
+      whereArgs: [categoria]
+    );
+
+  }
+
+
+  static Future deleteDb()async{
+    final db = await _getDB();
+
+    return db.execute('DROP TABLE Products');
+
+  }
 }
