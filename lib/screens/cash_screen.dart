@@ -57,7 +57,7 @@ class _CashScreenState extends State<CashScreen> {
               icon: const Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Icon(
-                  Icons.shopping_cart_checkout_rounded,
+                  Icons.qr_code_scanner_rounded,
                   color: Colors.teal,
                   size: 65,
                 ),
@@ -70,6 +70,20 @@ class _CashScreenState extends State<CashScreen> {
 
 
       body:ProductList(title: 'Carrito', list: cart),
+      floatingActionButton: 
+        IconButton(
+          onPressed: () {
+              
+          }, 
+        icon: const Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Icon(
+            Icons.shopping_cart_checkout_rounded,
+            color: Colors.teal,
+            size: 65,
+            ),
+          )
+        ),
       bottomNavigationBar: const BottomBar(currentPage: 1),
     );
   }
