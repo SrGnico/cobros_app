@@ -170,6 +170,30 @@ class _AddProductScreenState extends State<AddProductScreen> {
               categoria: selectedCategoria, 
               precio: precioController.text
             );
+
+            if(product.codigo.isEmpty && product.descripcion.isEmpty && product.precio.isEmpty) {
+              showDialog(context: context, 
+                builder: (context) => AlertDialog(
+                  title: const Text('Faltan campos por agregar!'),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        context.pop();
+                        context.pop();
+
+                      }, 
+                      child: const Text('Cancelar')),
+                    TextButton(
+                      onPressed: (){
+                        context.pop();
+                      }, 
+                      child: const Text('Volver')
+                    ),
+                  ],
+                ),
+              );
+              return;
+            }
     
             DatabaseHelper.addProduct(product);
             context.pop();
