@@ -1,4 +1,5 @@
 import 'package:cobros_app/models/product.dart';
+import 'package:cobros_app/widgets/future_product_item.dart';
 import 'package:cobros_app/widgets/product_cart_item.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class FutureProductList extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final item = snapshot.data![index];
-                    return ProductCartItem(product: item);
+                    return FutureProductItem(product: item);
                   },
                 );
               }
