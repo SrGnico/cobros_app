@@ -1,13 +1,22 @@
 import 'package:cobros_app/models/product.dart';
-import 'package:cobros_app/widgets/future_product_item.dart';
-import 'package:cobros_app/widgets/product_cart_item.dart';
+import 'package:cobros_app/widgets/product/future_product_item.dart';
 import 'package:flutter/material.dart';
 
 class FutureProductList extends StatelessWidget {
 
-  final list;
+  Function addProductToEditingList;
+  Function deleteProductFromEditingList;
+
+
+  final Future<List<Product>?>? list;
   final String? title;
-  const FutureProductList({super.key, this.title, this.list});
+  FutureProductList({
+    required this.addProductToEditingList,
+    required this.deleteProductFromEditingList,
+    super.key, 
+    this.title, 
+    this.list
+  });
 
   @override
   Widget build(BuildContext context){
@@ -37,7 +46,11 @@ class FutureProductList extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final item = snapshot.data![index];
-                    return FutureProductItem(product: item);
+                    return FutureProductItem(
+                      addProductToEditingList: addProductToEditingList,
+                      deleteProductFromEditingList: deleteProductFromEditingList,
+                      product: item
+                    );
                   },
                 );
               }

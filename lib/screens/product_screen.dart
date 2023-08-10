@@ -2,7 +2,7 @@ import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_delper.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
-import 'package:cobros_app/widgets/future_product_list.dart';
+import 'package:cobros_app/widgets/product/future_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +20,23 @@ class _ProductScreenState extends State<ProductScreen> {
   String selectedCategoria = '';
 
   Future<List<Product>?> list = DatabaseHelper.getAllProducts();
+
+
+  List<String> editingList = [];
+
+  void addProductToEditingList(String codigo){
+    editingList.add(codigo);
+    if(editingList.length == 1){
+      setState(() {});
+    }
+  }
+
+  void deleteProductFromEditingList(String codigo){
+    if(editingList.length == 1){
+      setState(() {});
+    }
+    editingList.remove(codigo);
+  }
 
 
   @override
@@ -111,16 +128,21 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-      body: FutureProductList(list: list,),
+      body: FutureProductList(
+        list: list,
+        addProductToEditingList: addProductToEditingList,
+        deleteProductFromEditingList: deleteProductFromEditingList,
+        ),
       floatingActionButton: 
         IconButton(
           onPressed: () {
-            context.goNamed('add');
+            //TODO IMPLEMENT EDIT SCREEN OR SEE WHAT TO DO
+            editingList.isEmpty ? context.goNamed('add') : context.goNamed('edit');
           }, 
-          icon: const Padding(
-            padding: EdgeInsets.all(5.0),
+          icon: Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Icon(
-              Icons.add,
+              editingList.isEmpty ? Icons.add : Icons.edit_rounded,
               color: Colors.teal,
               size: 65,
               ),
