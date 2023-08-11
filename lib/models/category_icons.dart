@@ -8,7 +8,7 @@ class CategoryIcon {
     'Congelados': Icons.ac_unit_rounded,
     'Bebidas': Icons.liquor_rounded,
     'Limpieza': Icons.clean_hands_rounded,
-    'Perfumeria': Icons.clean_hands_rounded,
+    'Perfumeria': Icons.auto_awesome_rounded,
     'Suelto': Icons.back_hand_rounded
   };
 

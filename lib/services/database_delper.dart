@@ -59,19 +59,6 @@ class DatabaseHelper {
 
   }
 
-
-  static Future getProductByCodigo(String codigo) async{
-
-    final db = await _getDB();
-
-    return await db.query(
-      'Productos',
-      where: 'codigo = ?',
-      whereArgs: [codigo]
-    );
-
-  }
-
    static Future<List<Product>?> getProductByCategoria(String categoria) async{
 
     final db = await _getDB();

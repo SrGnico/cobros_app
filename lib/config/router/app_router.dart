@@ -1,4 +1,5 @@
-import 'package:cobros_app/screens/add_product_screen.dart';
+import 'package:cobros_app/models/product.dart';
+import 'package:cobros_app/screens/add_or_edit_product_screen.dart';
 import 'package:cobros_app/screens/cash_screen.dart';
 import 'package:cobros_app/screens/product_screen.dart';
 import 'package:cobros_app/screens/record_screen.dart';
@@ -55,11 +56,13 @@ final appRouter = GoRouter(
       },
       routes: [
         GoRoute(
-          path: 'add',
-          name: 'add',
+          path: 'addOrEdit',
+          name: 'addOrEdit',
+  
           pageBuilder: (context, state) {
+            Product product =  state.extra as Product;
             return CustomTransitionPage(
-            child: AddProductScreen(), 
+            child: AddOrEditProductScreen(editingProduct: product ), 
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 return FadeTransition(
                   opacity: CurveTween(curve: Curves.fastOutSlowIn).animate(animation),

@@ -3,6 +3,7 @@ import 'package:cobros_app/models/category_icons.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 class FutureProductItem extends StatefulWidget {
   Function addProductToEditingList;
@@ -50,6 +51,9 @@ class _FutureProductItemState extends State<FutureProductItem> {
               children: [
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
+                  onTap: (){
+                    context.goNamed('addOrEdit',extra: widget.product);
+                  },
                   onLongPress: () {
                     setState(() {
                       isSelected = !isSelected;

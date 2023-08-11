@@ -8,8 +8,8 @@ class CategoryColor {
     'Congelados': Colors.indigo,
     'Bebidas': Colors.orange,
     'Limpieza': Colors.purple,
-    'Perfumeria': Colors.pink,
-    'Suelto':Colors.amber
+    'Perfumeria': Colors.green,
+    'Suelto':Colors.grey
   };
 
 }

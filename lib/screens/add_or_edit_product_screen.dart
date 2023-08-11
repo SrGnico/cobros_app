@@ -6,26 +6,42 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 
-class AddProductScreen extends StatefulWidget {
+class AddOrEditProductScreen extends StatefulWidget {
 
-  const AddProductScreen({super.key});
+  final Product? editingProduct;
+
+  const AddOrEditProductScreen({
+    this.editingProduct,
+    super.key
+  });
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<AddOrEditProductScreen> createState() => _AddOrEditProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
 
   var descripcionController = TextEditingController();
   var precioController = TextEditingController();
   var codigoController = TextEditingController();
   final categorias = Category.categorias;
 
+  bool isEditing = false;
+
+
 
   String selectedCategoria = 'Almacen';
   
   @override
-  void initState() {
+  void initState(){
+
+    if(widget.editingProduct != null){
+      isEditing = true;
+      selectedCategoria = widget.editingProduct!.categoria;
+      descripcionController.text = widget.editingProduct!.descripcion;
+      precioController.text = widget.editingProduct!.precio;
+      codigoController.text = widget.editingProduct!.codigo;
+    }
     super.initState();
   }
 
@@ -33,28 +49,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
 
-   
-
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
         toolbarHeight: 150,
         automaticallyImplyLeading: false,
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Productos',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
-              'Agregar',
+              isEditing
+              ? 'Editar'
+              : 'Agregar',
               maxLines: 1,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 80,
                 fontWeight: FontWeight.w500
               ),
@@ -194,9 +210,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
               );
               return;
             }
-    
-            DatabaseHelper.addProduct(product);
-            context.pop();
+            isEditing
+              ? DatabaseHelper.updateProduct(product)
+              : DatabaseHelper.addProduct(product);
+            context.push('/product');
           }, 
           icon: const Padding(
             padding: EdgeInsets.all(5.0),

@@ -1,6 +1,6 @@
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
-import 'package:cobros_app/widgets/cash/product_list.dart';
+import 'package:cobros_app/widgets/cart/product_list.dart';
 import 'package:flutter/material.dart';
 
 class CashScreen extends StatefulWidget {

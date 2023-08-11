@@ -5,7 +5,6 @@ import 'package:cobros_app/widgets/bottom_bar.dart';
 import 'package:cobros_app/widgets/product/future_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class ProductScreen extends StatefulWidget {
 
@@ -22,7 +21,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<List<Product>?> list = DatabaseHelper.getAllProducts();
 
-  var _nuevoPrecio = TextEditingController();
+  final _nuevoPrecio = TextEditingController();
 
 
   List<String> editingList = [];
@@ -39,6 +38,11 @@ class _ProductScreenState extends State<ProductScreen> {
       setState(() {});
     }
     editingList.remove(codigo);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
 
@@ -139,9 +143,8 @@ class _ProductScreenState extends State<ProductScreen> {
       floatingActionButton: 
         IconButton(
           onPressed: () {
-            //TODO IMPLEMENT EDIT SCREEN OR SEE WHAT TO DO
             editingList.isEmpty 
-              ? context.goNamed('add') 
+              ? context.goNamed('addOrEdit') 
               : showDialog(context: context, 
               builder: (context) => AlertDialog(
                 title: const Text('Actualizar precios'),
@@ -160,6 +163,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         await DatabaseHelper.updatePrices(editingList, _nuevoPrecio.text);
                         setState(() {
                           _nuevoPrecio.text = '';
+                          editingList = [];
                           list = DatabaseHelper.getAllProducts();
                           context.pop();
                         });

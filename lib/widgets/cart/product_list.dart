@@ -1,5 +1,5 @@
 import 'package:cobros_app/models/product.dart';
-import 'package:cobros_app/widgets/cash/product_cart_item.dart';
+import 'package:cobros_app/widgets/cart/product_cart_item.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
