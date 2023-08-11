@@ -95,4 +95,23 @@ class DatabaseHelper {
     return db.execute('DROP TABLE Products');
 
   }
+
+  static Future updatePrices(List<String> codigos, String precioNuevo)async{
+    final db = await _getDB();
+
+    final batch = db.batch();
+
+    for(int i = 0; i < codigos.length; i++){
+      batch.rawUpdate('''
+        UPDATE Products
+        SET precio = ?
+        WHERE codigo = ?
+      ''',
+      [precioNuevo,codigos[i]]
+      );
+    }
+
+    await batch.commit();
+
+  }
 }
