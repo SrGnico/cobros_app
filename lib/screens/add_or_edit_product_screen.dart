@@ -138,6 +138,7 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
             const SizedBox(height: 10),
             TextField(
               controller: codigoController,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 label: Text('Codigo'),
@@ -148,6 +149,7 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
 
             TextField(
               controller: precioController,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 label: Text('Precio'),

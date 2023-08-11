@@ -54,7 +54,7 @@ class FutureProductList extends StatelessWidget {
                   },
                 );
               }
-              else{return const Center(child: Text('Aun no hay productos!'),);}
+              else{return const Center(child: Text('No se han encontrado resultados!'),);}
             },
           ),
         ),

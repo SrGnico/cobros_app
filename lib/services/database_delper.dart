@@ -102,4 +102,21 @@ class DatabaseHelper {
     await batch.commit(noResult: true,continueOnError: true );
 
   }
+
+   static Future<List<Product>?> getProductBySearch(String search) async{
+
+    final db = await _getDB();
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Productos',
+      where: 'descripcion LIKE ? OR codigo LIKE ?',
+      whereArgs: ['%$search%','%$search%']
+    );
+
+    if(maps.isEmpty){return null;}
+
+    return List.generate(maps.length, (index) => Product.fromJson(maps[index]));
+
+  }
+
 }

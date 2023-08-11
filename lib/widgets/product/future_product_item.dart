@@ -52,9 +52,7 @@ class _FutureProductItemState extends State<FutureProductItem> {
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: (){
-                    context.goNamed('addOrEdit',extra: widget.product);
-                  },
-                  onLongPress: () {
+                    HapticFeedback.vibrate();
                     setState(() {
                       isSelected = !isSelected;
                       if(isSelected){
@@ -64,6 +62,10 @@ class _FutureProductItemState extends State<FutureProductItem> {
                         widget.deleteProductFromEditingList(widget.product.codigo.toString());
                       }
                     });
+                  },
+                  onLongPress: () {
+                    context.goNamed('addOrEdit',extra: widget.product);
+                    
                   },
                   child: SizedBox(
                     width: (MediaQuery.of(context).size.width - 36) ,

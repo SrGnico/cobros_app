@@ -22,11 +22,21 @@ class _ProductScreenState extends State<ProductScreen> {
   Future<List<Product>?> list = DatabaseHelper.getAllProducts();
 
   final _nuevoPrecio = TextEditingController();
+  final _search = TextEditingController();
 
   final Product emptyProduct = Product(codigo: '', descripcion: '', categoria: '', precio: '');
 
 
   List<String> editingList = [];
+
+  void getProductBySearch(){
+    setState(() {
+      list = DatabaseHelper.getProductBySearch(_search.text);
+      selectedCategoria = _search.text;
+      _search.text = '';
+      context.pop();
+    });
+  }
 
   void addProductToEditingList(String codigo){
     editingList.add(codigo);
@@ -85,35 +95,71 @@ class _ProductScreenState extends State<ProductScreen> {
               onPressed: () => showDialog(
                 context: context,
                 builder: (context) =>AlertDialog(
-                  title: const Text('Filtrar por categoria'),
-                  content: SizedBox(
-                    height:height/2,
-                    width: width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: categorias.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return RadioListTile<String>(
-                          value: categorias[index].toString(), 
-                          title: Text(categorias[index].toString()),
-                          groupValue: selectedCategoria, 
-                          onChanged: (value){
-                            setState(() {
-                              selectedCategoria = value!;
-                              list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
-                            });
-                            context.pop();
-
-                          }
-                        );
-                      },
+                  title: const Text('Filtrar o buscar'),
+                  content: SingleChildScrollView(
+                    child: SizedBox(
+                      height:height/2,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: TextField(
+                                controller: _search,
+                                onSubmitted: (value) => getProductBySearch(),
+                                textInputAction: TextInputAction.search,
+                                decoration: InputDecoration(
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 3),
+                                    child: IconButton(
+                                      onPressed:()=> getProductBySearch(),
+                                      icon: const Icon(Icons.search_rounded)),
+                                  ),
+                                  border:const  OutlineInputBorder(),
+                                  label: const Text('Buscar'),
+                                ),
+                              ),
+                            ),
+                            const Divider(),
+                            const Text('Filtrar por categoria',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20
+                            ),
+                            ),
+                            ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: categorias.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return RadioListTile<String>(
+                                  value: categorias[index].toString(), 
+                                  title: Text(categorias[index].toString()),
+                                  groupValue: selectedCategoria, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      selectedCategoria = value!;
+                                      list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
+                                    });
+                                    context.pop();
+                            
+                                  }
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ), 
                   actions: <Widget>[
                     TextButton(
                       onPressed: (){
                         setState(() {
+                          _search.text = '';
                           selectedCategoria = '';
                           list = DatabaseHelper.getAllProducts();
                           context.pop();
@@ -154,6 +200,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 content: TextField(
                   controller: _nuevoPrecio,
                   autofocus: true,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     label: Text('Nuevo precio'),
                     border:  OutlineInputBorder(),
@@ -180,7 +227,7 @@ class _ProductScreenState extends State<ProductScreen> {
           icon: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Icon(
-              editingList.isEmpty ? Icons.add : Icons.edit_rounded,
+              editingList.isEmpty ? Icons.add : Icons.price_change_rounded,
               color: Colors.teal,
               size: 65,
               ),
