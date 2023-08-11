@@ -5,6 +5,7 @@ import 'package:cobros_app/widgets/bottom_bar.dart';
 import 'package:cobros_app/widgets/product/future_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class ProductScreen extends StatefulWidget {
 
@@ -20,6 +21,8 @@ class _ProductScreenState extends State<ProductScreen> {
   String selectedCategoria = '';
 
   Future<List<Product>?> list = DatabaseHelper.getAllProducts();
+
+  var _nuevoPrecio = TextEditingController();
 
 
   List<String> editingList = [];
@@ -137,7 +140,35 @@ class _ProductScreenState extends State<ProductScreen> {
         IconButton(
           onPressed: () {
             //TODO IMPLEMENT EDIT SCREEN OR SEE WHAT TO DO
-            editingList.isEmpty ? context.goNamed('add') : context.goNamed('edit');
+            editingList.isEmpty 
+              ? context.goNamed('add') 
+              : showDialog(context: context, 
+              builder: (context) => AlertDialog(
+                title: const Text('Actualizar precios'),
+                content: TextField(
+                  controller: _nuevoPrecio,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    label: Text('Nuevo precio'),
+                    border:  OutlineInputBorder(),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: ()async{
+                      if(_nuevoPrecio.text.isNotEmpty){
+                        await DatabaseHelper.updatePrices(editingList, _nuevoPrecio.text);
+                        setState(() {
+                          _nuevoPrecio.text = '';
+                          list = DatabaseHelper.getAllProducts();
+                          context.pop();
+                        });
+                      }
+                    }, 
+                    child: const Text('Guardar')
+                  )
+                ],
+              ));
           }, 
           icon: Padding(
             padding: const EdgeInsets.all(5.0),

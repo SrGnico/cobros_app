@@ -88,13 +88,14 @@ class DatabaseHelper {
 
   }
 
-
+/*
   static Future deleteDb()async{
     final db = await _getDB();
 
     return db.execute('DROP TABLE Products');
 
   }
+*/
 
   static Future updatePrices(List<String> codigos, String precioNuevo)async{
     final db = await _getDB();
@@ -103,7 +104,7 @@ class DatabaseHelper {
 
     for(int i = 0; i < codigos.length; i++){
       batch.rawUpdate('''
-        UPDATE Products
+        UPDATE Productos
         SET precio = ?
         WHERE codigo = ?
       ''',
