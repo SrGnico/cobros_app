@@ -8,10 +8,10 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class AddOrEditProductScreen extends StatefulWidget {
 
-  final Product? editingProduct;
+  final Product editingProduct;
 
   const AddOrEditProductScreen({
-    this.editingProduct,
+    required this.editingProduct,
     super.key
   });
 
@@ -35,12 +35,12 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
   @override
   void initState(){
 
-    if(widget.editingProduct != null){
+    if(widget.editingProduct.codigo != ''){
       isEditing = true;
-      selectedCategoria = widget.editingProduct!.categoria;
-      descripcionController.text = widget.editingProduct!.descripcion;
-      precioController.text = widget.editingProduct!.precio;
-      codigoController.text = widget.editingProduct!.codigo;
+      selectedCategoria = widget.editingProduct.categoria;
+      descripcionController.text = widget.editingProduct.descripcion;
+      precioController.text = widget.editingProduct.precio;
+      codigoController.text = widget.editingProduct.codigo;
     }
     super.initState();
   }
@@ -81,7 +81,18 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
             child: IconButton(
-              onPressed: () async {
+              onPressed: isEditing
+              ? (){
+                Product product = Product(
+                  codigo: codigoController.text, 
+                  descripcion: descripcionController.text, 
+                  categoria: selectedCategoria, 
+                  precio: precioController.text
+                );
+                DatabaseHelper.deleteProduct(product);
+                context.push('/product');
+              }
+              :() async {
                 var res = await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -93,11 +104,15 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
                   }
                 });
               },
-              icon: const Padding(
-                padding: EdgeInsets.all(5.0),
+              icon: Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: Icon(
-                  Icons.qr_code_scanner_rounded,
-                  color: Colors.teal,
+                  isEditing
+                  ? Icons.delete_rounded 
+                  : Icons.qr_code_scanner_rounded,
+                  color: isEditing
+                  ? Colors.red
+                  : Colors.teal,
                   size: 65,
                 ),
               )

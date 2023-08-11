@@ -23,6 +23,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   final _nuevoPrecio = TextEditingController();
 
+  final Product emptyProduct = Product(codigo: '', descripcion: '', categoria: '', precio: '');
+
 
   List<String> editingList = [];
 
@@ -53,6 +55,7 @@ class _ProductScreenState extends State<ProductScreen> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 150,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +147,7 @@ class _ProductScreenState extends State<ProductScreen> {
         IconButton(
           onPressed: () {
             editingList.isEmpty 
-              ? context.goNamed('addOrEdit') 
+              ? context.goNamed('addOrEdit', extra: emptyProduct) 
               : showDialog(context: context, 
               builder: (context) => AlertDialog(
                 title: const Text('Actualizar precios'),
