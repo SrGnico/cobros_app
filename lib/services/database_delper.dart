@@ -111,7 +111,7 @@ class DatabaseHelper {
       );
     }
 
-    await batch.commit();
+    await batch.commit(noResult: true,continueOnError: true );
 
   }
 }
