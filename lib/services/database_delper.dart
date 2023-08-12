@@ -47,6 +47,21 @@ class DatabaseHelper {
     );
   }
 
+  static Future<List<Product>> getProductByCodigo(String codigo) async{
+
+    final db = await _getDB();
+
+   final List<Map<String, dynamic>> maps = await db.query(
+    'Productos',
+    where: 'codigo = ?',
+    whereArgs: [codigo]
+    );
+  
+    return List.generate(maps.length, (index) => Product.fromJson(maps[index]));
+
+  }
+
+
   static Future<List<Product>?> getAllProducts() async{
 
     final db = await _getDB();

@@ -1,5 +1,5 @@
 import 'package:cobros_app/models/product.dart';
-import 'package:cobros_app/widgets/product/future_product_item.dart';
+import 'package:cobros_app/widgets/item/item_list.dart';
 import 'package:flutter/material.dart';
 
 class FutureProductList extends StatelessWidget {
@@ -46,7 +46,7 @@ class FutureProductList extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final item = snapshot.data![index];
-                    return FutureProductItem(
+                    return ItemList(
                       addProductToEditingList: addProductToEditingList,
                       deleteProductFromEditingList: deleteProductFromEditingList,
                       product: item

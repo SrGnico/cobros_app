@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-class FutureProductItem extends StatefulWidget {
+class ItemList extends StatefulWidget {
   Function addProductToEditingList;
   Function deleteProductFromEditingList;
   final Product product;
 
-  FutureProductItem({
+  ItemList({
     super.key, 
     required this.product,
     required this.addProductToEditingList,
@@ -18,10 +18,10 @@ class FutureProductItem extends StatefulWidget {
   });
 
   @override
-  State<FutureProductItem> createState() => _FutureProductItemState();
+  State<ItemList> createState() => _ItemListState();
 }
 
-class _FutureProductItemState extends State<FutureProductItem> {
+class _ItemListState extends State<ItemList> {
 
 
   final colores = CategoryColor.colores;
@@ -35,7 +35,6 @@ class _FutureProductItemState extends State<FutureProductItem> {
   @override
   Widget build(BuildContext context) {
 
-    // TODO: ver como editar todos los selecionados y crear un dialog tal vez para cambiar el precio?
     return Column(
       children: [
         Padding(
@@ -100,23 +99,29 @@ class _FutureProductItemState extends State<FutureProductItem> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 15),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.product.descripcion,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25
+                        const SizedBox(width: 5),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width/1.8),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(widget.product.descripcion,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25
+                                ),
+                                ),
+                                Text(widget.product.categoria,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20
+                                ),  
+                                )
+                              ],
                             ),
-                            ),
-                            Text(widget.product.categoria,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 20
-                            ),  
-                            )
-                          ],
+                          ),
                         ),
                         const Spacer(),
                         Text(
