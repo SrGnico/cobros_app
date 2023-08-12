@@ -3,12 +3,12 @@ import 'package:cobros_app/widgets/item/item_list.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatelessWidget {
-  Function addProductToEditingList;
-  Function deleteProductFromEditingList;
+  final Function addProductToEditingList;
+  final Function deleteProductFromEditingList;
 
   final List<Product> list;
   final String title;
-  ProductList({
+  const ProductList({
     super.key, 
     required this.addProductToEditingList,
     required this.deleteProductFromEditingList,

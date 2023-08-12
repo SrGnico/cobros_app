@@ -27,7 +27,6 @@ class _CashScreenState extends State<CashScreen> {
     var exists = cart.where((element) => element.codigo == item.codigo);
 
     if(exists.isNotEmpty){
-      print('yala');
       addOneMoreToCart(item.codigo, item.precio);
       setState(() {
         calculateTotal();
@@ -58,7 +57,6 @@ class _CashScreenState extends State<CashScreen> {
     categoria: cart[index].categoria, 
     precio: nuevoPrecio.toString(),
     );
-
   }
 
   
@@ -79,9 +77,6 @@ class _CashScreenState extends State<CashScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -112,6 +107,7 @@ class _CashScreenState extends State<CashScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
             child: IconButton(
+              style: IconButton.styleFrom(backgroundColor: Colors.teal),
               onPressed: editingList.isEmpty
               ?() async {
                 var res = await Navigator.push(
@@ -142,8 +138,8 @@ class _CashScreenState extends State<CashScreen> {
                   :  Icons.delete_rounded,
                   color:
                     editingList.isEmpty
-                    ? Colors.teal
-                    :Colors. red,
+                    ? Colors.white
+                    :Colors.redAccent,
                   size: 65,
                 ),
               )
@@ -161,17 +157,18 @@ class _CashScreenState extends State<CashScreen> {
         deleteProductFromEditingList: deleteProductFromEditingList,
         ),
       floatingActionButton: 
-        IconButton(
-          onPressed: () {
-              //TODO implementar funcionalidades al boton
-          }, 
+        IconButton.filled(
+        onPressed: () {
+            //TODO implementar funcionalidades al boton
+        }, 
+        style: IconButton.styleFrom(backgroundColor: Colors.teal),
         icon: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Icon(
             editingList.isEmpty
             ? Icons.shopping_cart_checkout_rounded
             : Icons.edit_rounded,
-            color: Colors.teal,
+            color: Colors.white,
             size: 65,
             ),
           )

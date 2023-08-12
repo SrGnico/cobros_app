@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class ItemList extends StatefulWidget {
-  Function addProductToEditingList;
-  Function deleteProductFromEditingList;
+  final Function addProductToEditingList;
+  final Function deleteProductFromEditingList;
   final Product product;
 
-  ItemList({
+  const ItemList({
     super.key, 
     required this.product,
     required this.addProductToEditingList,

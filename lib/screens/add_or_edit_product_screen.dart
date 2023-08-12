@@ -81,6 +81,7 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
             child: IconButton(
+              style: IconButton.styleFrom(backgroundColor: Colors.teal),
               onPressed: isEditing
               ? (){
                 showDialog(context: context, 
@@ -129,8 +130,8 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
                   ? Icons.delete_rounded 
                   : Icons.qr_code_scanner_rounded,
                   color: isEditing
-                  ? Colors.red
-                  : Colors.teal,
+                  ? Colors.redAccent
+                  : Colors.white,
                   size: 65,
                 ),
               )
@@ -214,6 +215,7 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
 
       floatingActionButton: 
         IconButton(
+          style: IconButton.styleFrom(backgroundColor: Colors.teal),
           onPressed:(){
             Product product = Product(
               codigo: codigoController.text, 
@@ -248,13 +250,17 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
             isEditing
               ? DatabaseHelper.updateProduct(product)
               : DatabaseHelper.addProduct(product);
+
+            codigoController.text = '';
+            descripcionController.text = '';
+            precioController.text = '';
             context.push('/product');
           }, 
           icon: const Padding(
             padding: EdgeInsets.all(5.0),
             child: Icon(
               Icons.check_rounded,
-              color: Colors.teal,
+              color: Colors.white,
               size: 65,
               ),
             )

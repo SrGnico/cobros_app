@@ -92,6 +92,7 @@ class _ProductScreenState extends State<ProductScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
             child: IconButton(
+              style: IconButton.styleFrom(backgroundColor: Colors.teal),
               onPressed: () => showDialog(
                 context: context,
                 builder: (context) =>AlertDialog(
@@ -175,7 +176,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 padding: EdgeInsets.all(5.0),
                 child: Icon(
                   Icons.sort_by_alpha_rounded,
-                  color: Colors.teal,
+                  color: Colors.white,
                   size: 65,
                 ),
               )
@@ -190,6 +191,7 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
       floatingActionButton: 
         IconButton(
+          style: IconButton.styleFrom(backgroundColor: Colors.teal),
           onPressed: () {
             editingList.isEmpty 
               ? context.goNamed('addOrEdit', extra: emptyProduct) 
@@ -227,7 +229,7 @@ class _ProductScreenState extends State<ProductScreen> {
             padding: const EdgeInsets.all(5.0),
             child: Icon(
               editingList.isEmpty ? Icons.add : Icons.price_change_rounded,
-              color: Colors.teal,
+              color: Colors.white,
               size: 65,
               ),
             )

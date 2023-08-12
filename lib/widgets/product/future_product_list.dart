@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 class FutureProductList extends StatelessWidget {
 
-  Function addProductToEditingList;
-  Function deleteProductFromEditingList;
+  final Function addProductToEditingList;
+  final Function deleteProductFromEditingList;
 
 
   final Future<List<Product>?>? list;
   final String? title;
-  FutureProductList({
+  const FutureProductList({
     required this.addProductToEditingList,
     required this.deleteProductFromEditingList,
     super.key, 
