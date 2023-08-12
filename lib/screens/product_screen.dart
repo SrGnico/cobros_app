@@ -145,7 +145,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                       list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
                                     });
                                     context.pop();
-                            
                                   }
                                 );
                               },

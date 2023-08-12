@@ -83,14 +83,32 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
             child: IconButton(
               onPressed: isEditing
               ? (){
-                Product product = Product(
-                  codigo: codigoController.text, 
-                  descripcion: descripcionController.text, 
-                  categoria: selectedCategoria, 
-                  precio: precioController.text
-                );
-                DatabaseHelper.deleteProduct(product);
-                context.push('/product');
+                showDialog(context: context, 
+                builder: (context) => AlertDialog(
+                  title: const Text('Eliminar producto'),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        context.pop();
+                        context.pop();
+                      }, 
+                      child: const Text('Cancelar')),
+                    TextButton(
+                      onPressed: (){
+                        Product product = Product(
+                          codigo: codigoController.text, 
+                          descripcion: descripcionController.text, 
+                          categoria: selectedCategoria, 
+                          precio: precioController.text
+                        );
+                        DatabaseHelper.deleteProduct(product);
+                        context.push('/product');
+                      }, 
+                      child: const Text('Eliminar')
+                    ),
+                  ],
+                ),
+              );
               }
               :() async {
                 var res = await Navigator.push(
