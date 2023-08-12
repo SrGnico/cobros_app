@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Button extends StatelessWidget {
+class ConditionalButton extends StatelessWidget {
 
   final dynamic condition;
   final VoidCallback trueOnPressed;
@@ -11,7 +11,7 @@ class Button extends StatelessWidget {
   final Color falseColor;
 
 
-  const Button({
+  const ConditionalButton({
     super.key, 
     this.condition, 
     required this.trueOnPressed, 
