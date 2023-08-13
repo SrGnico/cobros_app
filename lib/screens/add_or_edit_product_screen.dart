@@ -1,6 +1,6 @@
 import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
-import 'package:cobros_app/services/database_delper.dart';
+import 'package:cobros_app/services/database_product.dart';
 import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

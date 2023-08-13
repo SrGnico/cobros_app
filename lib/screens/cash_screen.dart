@@ -1,5 +1,5 @@
 import 'package:cobros_app/models/product.dart';
-import 'package:cobros_app/services/database_delper.dart';
+import 'package:cobros_app/services/database_product.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
 import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:cobros_app/widgets/cart/product_list.dart';
