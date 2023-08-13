@@ -23,7 +23,6 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
 
-
   final colores = CategoryColor.colores;
 
   final icons = CategoryIcon.icons;
@@ -101,25 +100,25 @@ class _ItemListState extends State<ItemList> {
                         const SizedBox(width: 5),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width/1.8),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(widget.product.descripcion,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(widget.product.descripcion,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 25
                                 ),
                                 ),
-                                Text(widget.product.categoria,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 20
-                                ),  
-                                )
-                              ],
-                            ),
+                              ),
+                              Text(widget.product.categoria,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 20
+                              ),  
+                              )
+                            ],
                           ),
                         ),
                         const Spacer(),

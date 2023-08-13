@@ -1,12 +1,13 @@
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_delper.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
+import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:cobros_app/widgets/cart/product_list.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class CashScreen extends StatefulWidget {
-
 
   const CashScreen({super.key});
 
@@ -21,7 +22,6 @@ class _CashScreenState extends State<CashScreen> {
 
   void addItemToCart(String codigo) async {
     List<Product> lista = await DatabaseHelper.getProductByCodigo(codigo);
-
     Product item = lista[0];
 
     var exists = cart.where((element) => element.codigo == item.codigo);
@@ -34,9 +34,9 @@ class _CashScreenState extends State<CashScreen> {
     }
     else{
       setState(() {
-      cart.add(item);
-      calculateTotal();
-    });
+        cart.add(item);
+        calculateTotal();
+      });
     }
 
   }
@@ -49,14 +49,43 @@ class _CashScreenState extends State<CashScreen> {
   }
 
   void addOneMoreToCart(String codigo, String precioOriginal){
-  final index = cart.indexWhere((item) => item.codigo == codigo );
-  int nuevoPrecio = int.parse(cart[index].precio) + int.parse(precioOriginal);
-  cart[index] = Product(
-    codigo: cart[index].codigo, 
-    descripcion: cart[index].descripcion, 
-    categoria: cart[index].categoria, 
-    precio: nuevoPrecio.toString(),
+    final index = cart.indexWhere((item) => item.codigo == codigo );
+    int nuevoPrecio = int.parse(cart[index].precio) + int.parse(precioOriginal);
+    cart[index] = Product(
+      codigo: cart[index].codigo, 
+      descripcion: cart[index].descripcion, 
+      categoria: cart[index].categoria, 
+      precio: nuevoPrecio.toString(),
     );
+  }
+
+   void removeOneMoreFromCart(String codigo) async{
+    List<Product> lista = await DatabaseHelper.getProductByCodigo(codigo);
+    Product item = lista[0];
+
+    final index = cart.indexWhere((item) => item.codigo == codigo );
+
+    int nuevoPrecio = int.parse(cart[index].precio) - int.parse(item.precio);
+    if(nuevoPrecio == 0){
+      cart.removeWhere((item) => item.codigo == codigo);
+      setState(() {
+        editingList = [];
+        calculateTotal();
+        if(context.canPop()){
+          context.pop();
+        }
+      });
+      return;
+    }
+    cart[index] = Product(
+      codigo: cart[index].codigo, 
+      descripcion: cart[index].descripcion, 
+      categoria: cart[index].categoria, 
+      precio: nuevoPrecio.toString(),
+    );
+    setState(() {
+      calculateTotal();
+    });
   }
 
   
@@ -117,6 +146,7 @@ class _CashScreenState extends State<CashScreen> {
                     ));
                 setState(() {
                   if (res is String){
+                    if(res == '-1') return;
                     addItemToCart(res);
                   }
                 });
@@ -139,7 +169,7 @@ class _CashScreenState extends State<CashScreen> {
                   color:
                     editingList.isEmpty
                     ? Colors.white
-                    :Colors.redAccent,
+                    : Colors.redAccent,
                   size: 65,
                 ),
               )
@@ -148,8 +178,6 @@ class _CashScreenState extends State<CashScreen> {
         ],
       ),
 
-
-
       body:ProductList(
         title: 'Carrito', 
         list: cart,
@@ -157,22 +185,58 @@ class _CashScreenState extends State<CashScreen> {
         deleteProductFromEditingList: deleteProductFromEditingList,
         ),
       floatingActionButton: 
-        IconButton.filled(
-        onPressed: () {
-            //TODO implementar funcionalidades al boton
-        }, 
-        style: IconButton.styleFrom(backgroundColor: Colors.teal),
-        icon: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Icon(
-            editingList.isEmpty
-            ? Icons.shopping_cart_checkout_rounded
-            : Icons.edit_rounded,
-            color: Colors.white,
-            size: 65,
-            ),
-          )
+        ConditionalButton(
+          condition: editingList.isEmpty, 
+          trueOnPressed: ()=>showDialog(
+            context: context, 
+            builder: (context) => AlertDialog(
+              title: const Text('Cobrar'),
+              actions: [
+                TextButton.icon(
+                  icon: const Icon(Icons.phone_android_rounded),
+                  onPressed: (){}, 
+                  label: const Text('Transferencia'),
+                  style: IconButton.styleFrom(backgroundColor: Colors.white),
+                ),
+                TextButton.icon(
+                  icon: const Icon(Icons.payments_rounded),
+                  onPressed: (){}, 
+                  label: const Text('Efectivo'),
+                  style: IconButton.styleFrom(backgroundColor: Colors.white),
+                )
+              ],
+            )
+          ), 
+          falseOnPressed: ()=>showDialog(
+            context: context, 
+            builder: (context)=> AlertDialog(
+              title: const Text('Modificar cantidad'),
+              actions: [
+                IconButton.filled(
+                  onPressed: (){
+                    for(int i = 0; i<editingList.length; i++){
+                    removeOneMoreFromCart(editingList[i]);
+                    }
+                  }, 
+                  icon: const Icon(Icons.exposure_minus_1_rounded),
+                ),
+                IconButton.filled(
+                  onPressed: (){
+                    for(int i = 0; i<editingList.length; i++){
+                      addItemToCart(editingList[i]);
+                    }
+                  }, 
+                  icon: const Icon(Icons.plus_one_rounded),
+                ),
+              ],
+            )
+          ), 
+          trueIcon: Icons.shopping_cart_checkout_rounded, 
+          falseIcon: Icons.edit_rounded, 
+          trueColor: Colors.white, 
+          falseColor: Colors.white
         ),
+
       bottomNavigationBar: const BottomBar(currentPage: 1),
     );
   }
