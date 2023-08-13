@@ -26,7 +26,7 @@ class DatabaseRecord{
           limpiezaTotal TEXT NOT NULL,
           perfumeriaTotal TEXT NOT NULL,
           sueltosTotal TEXT NOT NULL,
-        )
+        );
       '''), version: _version,
     );
 
@@ -97,7 +97,7 @@ class DatabaseRecord{
       where: 'fecha LIKE ?',
       whereArgs: ['%$date%']
     );
-    
+
     if(maps.isEmpty){return null;}
 
     return List.generate(maps.length, (index) => Cart.fromJson(maps[index]));
