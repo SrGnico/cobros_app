@@ -1,4 +1,4 @@
-import 'package:cobros_app/models/category/category.dart';
+import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
