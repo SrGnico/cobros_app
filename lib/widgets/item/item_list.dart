@@ -63,8 +63,7 @@ class _ItemListState extends State<ItemList> {
                     });
                   },
                   onLongPress: () {
-                    context.goNamed('addOrEdit',extra: widget.product);
-                    
+                    context.pushNamed('addOrEdit',extra: widget.product);
                   },
                   child: SizedBox(
                     width: (MediaQuery.of(context).size.width - 36) ,

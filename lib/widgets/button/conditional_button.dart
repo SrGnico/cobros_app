@@ -13,7 +13,7 @@ class ConditionalButton extends StatelessWidget {
 
   const ConditionalButton({
     super.key, 
-    this.condition, 
+    required this.condition, 
     required this.trueOnPressed, 
     required this.falseOnPressed, 
     required this.trueIcon, 

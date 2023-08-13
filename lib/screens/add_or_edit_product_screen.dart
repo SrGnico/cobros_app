@@ -1,6 +1,7 @@
 import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_delper.dart';
+import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
@@ -80,10 +81,9 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
-            child: IconButton(
-              style: IconButton.styleFrom(backgroundColor: Colors.teal),
-              onPressed: isEditing
-              ? (){
+            child:ConditionalButton(
+              condition: isEditing,
+              trueOnPressed: (){
                 showDialog(context: context, 
                 builder: (context) => AlertDialog(
                   title: const Text('Eliminar producto'),
@@ -110,8 +110,8 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
                   ],
                 ),
               );
-              }
-              :() async {
+              }, 
+              falseOnPressed: () async {
                 var res = await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -122,20 +122,11 @@ class _AddOrEditProductScreenState extends State<AddOrEditProductScreen> {
                     codigoController.text = res;
                   }
                 });
-              },
-              icon: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(
-                  isEditing
-                  ? Icons.delete_rounded 
-                  : Icons.qr_code_scanner_rounded,
-                  color: isEditing
-                  ? Colors.redAccent
-                  : Colors.white,
-                  size: 65,
-                ),
-              )
-            ),
+              }, 
+              trueIcon: Icons.delete_rounded, 
+              falseIcon: Icons.qr_code_scanner_rounded, 
+              trueColor: Colors.redAccent, 
+              falseColor: Colors.white)
           ),
         ],
        

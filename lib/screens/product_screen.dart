@@ -2,6 +2,7 @@ import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_delper.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
+import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:cobros_app/widgets/product/future_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -23,9 +24,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   final _nuevoPrecio = TextEditingController();
   final _search = TextEditingController();
-
-  final Product emptyProduct = Product(codigo: '', descripcion: '', categoria: '', precio: '');
-
 
   List<String> editingList = [];
 
@@ -66,6 +64,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        scrolledUnderElevation: 0,
         toolbarHeight: 150,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,12 +189,14 @@ class _ProductScreenState extends State<ProductScreen> {
         deleteProductFromEditingList: deleteProductFromEditingList,
         ),
       floatingActionButton: 
-        IconButton(
-          style: IconButton.styleFrom(backgroundColor: Colors.teal),
-          onPressed: () {
-            editingList.isEmpty 
-              ? context.goNamed('addOrEdit', extra: emptyProduct) 
-              : showDialog(context: context, 
+        ConditionalButton(
+          condition: editingList.isEmpty, 
+          trueOnPressed: (){
+            Product emptyProduct = Product(codigo: '', descripcion: '', categoria: '', precio: '');
+            context.pushNamed('addOrEdit', extra:emptyProduct);
+          }, 
+          falseOnPressed: (){
+            showDialog(context: context, 
               builder: (context) => AlertDialog(
                 title: const Text('Actualizar precios'),
                 content: TextField(
@@ -223,17 +224,14 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: const Text('Guardar')
                   )
                 ],
-              ));
-          }, 
-          icon: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Icon(
-              editingList.isEmpty ? Icons.add : Icons.price_change_rounded,
-              color: Colors.white,
-              size: 65,
               ),
-            )
-          ),
+            );
+          }, 
+          trueIcon: Icons.add, 
+          falseIcon: Icons.price_change_rounded, 
+          trueColor: Colors.white, 
+          falseColor: Colors.white
+        ),
       bottomNavigationBar: const BottomBar(currentPage: 2),
     );
   }
