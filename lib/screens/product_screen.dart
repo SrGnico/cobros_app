@@ -1,4 +1,4 @@
-import 'package:cobros_app/models/category.dart';
+import 'package:cobros_app/models/category/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_delper.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
