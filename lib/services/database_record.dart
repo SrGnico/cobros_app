@@ -66,7 +66,43 @@ class DatabaseRecord{
 
   }
 
+  static Future<List<Cart>?> getRecordByDate(String date)async{
+    final db = await _getDB();
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Registros',
+      where: 'fecha = ?',
+      whereArgs: [date]
+    );
+
+    return List.generate(maps.length, (index) => Cart.fromJson(maps[index]));
+  }  
+
+  static Future<List<Cart>?> getAllRecords() async{
+    final db = await _getDB();
+
+    final List<Map<String, dynamic>> maps = await db.query('Productos');
+
+    if(maps.isEmpty){return null;}
+
+    return List.generate(maps.length, (index) => Cart.fromJson(maps[index]));
+  }
+
+  static Future<List<Cart>?> getRecordBySearch(String date) async{
+
+    final db = await _getDB();
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Productos',
+      where: 'fecha LIKE ?',
+      whereArgs: ['%$date%']
+    );
+    
+    if(maps.isEmpty){return null;}
+
+    return List.generate(maps.length, (index) => Cart.fromJson(maps[index]));
 
 
+  }
 
 }
