@@ -26,8 +26,6 @@ class _ItemListState extends State<ItemList> {
 
   final icons = CategoryIcon.icons;
 
-  final ScrollController _controller = ScrollController();
-
   bool isSelected = false;
 
   @override
@@ -42,7 +40,6 @@ class _ItemListState extends State<ItemList> {
             height: 52,
             child: ListView(
               physics: null,
-              controller: _controller,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               children: [

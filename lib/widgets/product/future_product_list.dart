@@ -8,14 +8,14 @@ class FutureProductList extends StatelessWidget {
   final Function deleteProductFromEditingList;
 
 
-  final Future<List<Product>?>? list;
+  final Future<List<Product>?> list;
   final String? title;
   const FutureProductList({
     required this.addProductToEditingList,
     required this.deleteProductFromEditingList,
     super.key, 
     this.title, 
-    this.list
+    required this.list
   });
 
   @override
