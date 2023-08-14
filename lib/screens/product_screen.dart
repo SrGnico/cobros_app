@@ -27,6 +27,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   List<String> editingList = [];
 
+
   void getProductBySearch(){
     setState(() {
       list = DatabaseHelper.getProductBySearch(_search.text);
@@ -98,7 +99,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   title: const Text('Filtrar o buscar'),
                   content: SingleChildScrollView(
                     child: SizedBox(
-                      height:height/2,
+                      height:height/ 2,
                       width: width,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -130,24 +131,29 @@ class _ProductScreenState extends State<ProductScreen> {
                               fontSize: 20
                             ),
                             ),
-                            ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: categorias.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return RadioListTile<String>(
-                                  value: categorias[index].toString(), 
-                                  title: Text(categorias[index].toString()),
-                                  groupValue: selectedCategoria, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      selectedCategoria = value!;
-                                      list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
-                                    });
-                                    context.pop();
-                                  }
-                                );
-                              },
+                            SingleChildScrollView(
+                              child: SizedBox(
+                                height:height /2.75,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: categorias.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return RadioListTile<String>(
+                                      value: categorias[index].toString(), 
+                                      title: Text(categorias[index].toString()),
+                                      groupValue: selectedCategoria, 
+                                      onChanged: (value){
+                                        setState(() {
+                                          selectedCategoria = value!;
+                                          list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
+                                        });
+                                        context.pop();
+                                      }
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ],
                         ),
