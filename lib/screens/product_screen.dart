@@ -161,7 +161,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ), 
                   actions: <Widget>[
-                    TextButton(
+                    TextButton.icon(
+                      icon: const Icon(Icons.cleaning_services_rounded),
                       onPressed: (){
                         setState(() {
                           _search.text = '';
@@ -170,7 +171,8 @@ class _ProductScreenState extends State<ProductScreen> {
                           context.pop();
                         });
                       },
-                      child: const Text('Limpiar filtros'),
+                      label: const Text('Limpiar filtros'),
+                      style: IconButton.styleFrom(backgroundColor: Colors.white),
                     ),
                    
                   ],
