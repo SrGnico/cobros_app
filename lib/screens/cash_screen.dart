@@ -1,3 +1,4 @@
+import 'package:cobros_app/models/cart.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_product.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
@@ -16,8 +17,38 @@ class CashScreen extends StatefulWidget {
 }
 
 class _CashScreenState extends State<CashScreen> {
+
+  void addCartToRecord(){
+    int day = DateTime.now().day;
+    int month = DateTime.now().month;
+    int year = DateTime.now().year;
+    String date = '$day/$month/$year';
+
+    calculateTotal();
+
+
+    Cart newCart = Cart(
+    fecha: date, 
+    cantidadVentas: '1', 
+    total: total.toString(), 
+    totalTransferencia: '', 
+    totalEfectivo: '', 
+    cantidadProductos: cantidadProductos.toString(), 
+    almacenTotal: '', 
+    lacteosTotal: '', 
+    congeladosTotal: '', 
+    bebidasTotal: '', 
+    limpiezaTotal: '', 
+    perfumeriaTotal: '', 
+    sueltosTotal: ''
+  );
+
+  }
+
+
   int total = 0;
   List<Product> cart = [];
+  int cantidadProductos = 0;
   List<String> editingList = [];
 
   void addItemToCart(String codigo) async {
@@ -25,7 +56,6 @@ class _CashScreenState extends State<CashScreen> {
     Product item = lista[0];
 
     var exists = cart.where((element) => element.codigo == item.codigo);
-
     if(exists.isNotEmpty){
       addOneMoreToCart(item.codigo, item.precio);
       setState(() {
@@ -35,6 +65,7 @@ class _CashScreenState extends State<CashScreen> {
     else{
       setState(() {
         cart.add(item);
+        cantidadProductos++;
         calculateTotal();
       });
     }
@@ -57,6 +88,8 @@ class _CashScreenState extends State<CashScreen> {
       categoria: cart[index].categoria, 
       precio: nuevoPrecio.toString(),
     );
+   cantidadProductos++;
+
   }
 
    void removeOneMoreFromCart(String codigo) async{
@@ -66,6 +99,7 @@ class _CashScreenState extends State<CashScreen> {
     final index = cart.indexWhere((item) => item.codigo == codigo );
 
     int nuevoPrecio = int.parse(cart[index].precio) - int.parse(item.precio);
+    cantidadProductos--;
     if(nuevoPrecio == 0){
       cart.removeWhere((item) => item.codigo == codigo);
       setState(() {

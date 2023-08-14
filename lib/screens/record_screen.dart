@@ -139,6 +139,13 @@ class RecordScreen extends StatelessWidget {
         ],
       ),
       body:const  Center(child: Text('Record Screen')),
+      floatingActionButton: 
+      IconButton(
+        icon: Icon(Icons.face),
+        onPressed:(){
+
+        } ,
+        ),
       bottomNavigationBar:const  BottomBar(currentPage: 0),
     );
   }
