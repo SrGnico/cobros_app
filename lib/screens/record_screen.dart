@@ -1,8 +1,20 @@
+import 'package:cobros_app/models/cart.dart';
+import 'package:cobros_app/services/database_record.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
+import 'package:cobros_app/widgets/record/record_list.dart';
 import 'package:flutter/material.dart';
 
-class RecordScreen extends StatelessWidget {
+class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
+
+  @override
+  State<RecordScreen> createState() => _RecordScreenState();
+}
+
+class _RecordScreenState extends State<RecordScreen> {
+
+
+  Future<List<Cart>?> list = DatabaseRecord.getAllRecords();
 
   @override
   Widget build(BuildContext context) {
@@ -110,14 +122,6 @@ class RecordScreen extends StatelessWidget {
                   actions: <Widget>[
                     TextButton(
                       onPressed: (){
-                        /*
-                        setState(() {
-                          _search.text = '';
-                          selectedCategoria = '';
-                          list = DatabaseHelper.getAllProducts();
-                          context.pop();
-                        });
-                        */
                       },
                       child: const Text('Limpiar filtros'),
                     ),
@@ -138,7 +142,7 @@ class RecordScreen extends StatelessWidget {
           ),
         ],
       ),
-      body:const  Center(child: Text('Record Screen')),
+      body: RecordList(list: list),
       floatingActionButton: 
       IconButton(
         icon: Icon(Icons.face),

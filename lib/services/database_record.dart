@@ -11,23 +11,7 @@ class DatabaseRecord{
 
     return openDatabase(join(await getDatabasesPath(),_dbName),
       onCreate: (db, version) async => 
-      await db.execute('''
-        CREATE TABLE Registros(
-          fecha TEXT PRIMARY KEY,
-          cantidadVentas TEXT NOT NULL,
-          total TEXT NOT NULL,
-          totalTransferencia TEXT NOT NULL,
-          totalEfectivo TEXT NOT NULL,
-          cantidadProductos TEXT NOT NULL,
-          almacenTotal TEXT NOT NULL,
-          lacteosTotal TEXT NOT NULL,
-          congeladosTotal TEXT NOT NULL,
-          bebidasTotal TEXT NOT NULL,
-          limpiezaTotal TEXT NOT NULL,
-          perfumeriaTotal TEXT NOT NULL,
-          sueltosTotal TEXT NOT NULL,
-        );
-      '''), version: _version,
+      await db.execute('CREATE TABLE Registros(fecha TEXT PRIMARY KEY,cantidadVentas TEXT NOT NULL,total TEXT NOT NULL,totalTransferencia TEXT NOT NULL,totalEfectivo TEXT NOT NULL,cantidadProductos TEXT NOT NULL,almacenTotal TEXT NOT NULL,lacteosTotal TEXT NOT NULL,congeladosTotal TEXT NOT NULL,bebidasTotal TEXT NOT NULL,limpiezaTotal TEXT NOT NULL,perfumeriaTotal TEXT NOT NULL,sueltosTotal TEXT NOT NULL);'), version: _version,
     );
 
   }
@@ -81,7 +65,7 @@ class DatabaseRecord{
   static Future<List<Cart>?> getAllRecords() async{
     final db = await _getDB();
 
-    final List<Map<String, dynamic>> maps = await db.query('Productos');
+    final List<Map<String, dynamic>> maps = await db.query('Registros');
 
     if(maps.isEmpty){return null;}
 

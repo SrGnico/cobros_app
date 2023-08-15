@@ -29,7 +29,9 @@ class _CashScreenState extends State<CashScreen> {
 
     if(actualCart != null){
 
-      setState(() {
+      if(actualCart.isNotEmpty){
+
+        setState(() {
         
       });
 
@@ -52,6 +54,10 @@ class _CashScreenState extends State<CashScreen> {
       );
 
       DatabaseRecord.updateRecord(newCart);
+
+
+      }
+      
     }
 
     else{
@@ -113,6 +119,10 @@ class _CashScreenState extends State<CashScreen> {
     limpiezaTotal = 0;
     perfumeriaTotal = 0;
     sueltosTotal = 0;
+
+    setState(() {
+      context.pop();
+    });
   }
 
   void addToCategoryTotal(String category, String precio){
@@ -151,7 +161,6 @@ class _CashScreenState extends State<CashScreen> {
         limpiezaTotal -= int.parse(precio);
       case 'Perfumeria':
         perfumeriaTotal -= int.parse(precio);
-
       case 'Suelto':
         sueltosTotal -= int.parse(precio);
     }
