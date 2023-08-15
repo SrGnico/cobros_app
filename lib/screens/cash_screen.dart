@@ -348,9 +348,11 @@ class _CashScreenState extends State<CashScreen> {
                 TextButton.icon(
                   icon: const Icon(Icons.phone_android_rounded),
                   onPressed: (){
-                    totalTransferencia = total;
-                    addCartToRecord();
-                    resetEverything();
+                    if(cart.isNotEmpty){
+                      totalTransferencia = total;
+                      addCartToRecord();
+                      resetEverything();
+                    }
                   }, 
                   label: const Text('Transferencia'),
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
@@ -358,9 +360,11 @@ class _CashScreenState extends State<CashScreen> {
                 TextButton.icon(
                   icon: const Icon(Icons.payments_rounded),
                   onPressed: (){
-                    totalEfectivo = total;
-                    addCartToRecord();
-                    resetEverything();
+                    if(cart.isNotEmpty){
+                      totalEfectivo = total;
+                      addCartToRecord();
+                      resetEverything();
+                    }
 
                   }, 
                   label: const Text('Efectivo'),
