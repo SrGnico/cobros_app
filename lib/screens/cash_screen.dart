@@ -1,4 +1,5 @@
 import 'package:cobros_app/models/cart.dart';
+import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_product.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
@@ -48,8 +49,60 @@ class _CashScreenState extends State<CashScreen> {
 
   int total = 0;
   List<Product> cart = [];
-  int cantidadProductos = 0;
   List<String> editingList = [];
+  int cantidadProductos = 0;
+  int almacenTotal = 0;
+  int lacteosTotal = 0;
+  int congeladosTotal = 0;
+  int bebidasTotal = 0;
+  int limpiezaTotal = 0;
+  int perfumeriaTotal = 0;
+  int sueltosTotal = 0;
+
+
+  void addToCategoryTotal(String category, String precio){
+
+    switch (category){
+      case 'Almacen':
+        almacenTotal += int.parse(precio);
+      case 'Lacteos':
+        lacteosTotal += int.parse(precio);
+      case 'Congelados':
+        congeladosTotal += int.parse(precio);
+      case 'Bebidas':
+        bebidasTotal += int.parse(precio);
+      case 'Limpieza':
+        limpiezaTotal += int.parse(precio);
+      case 'Perfumeria':
+        perfumeriaTotal += int.parse(precio);
+
+      case 'Suelto':
+        sueltosTotal += int.parse(precio);
+    }
+
+  }
+
+    void minusToCategoryTotal(String category, String precio){
+
+    switch (category){
+      case 'Almacen':
+        almacenTotal -= int.parse(precio);
+      case 'Lacteos':
+        lacteosTotal -= int.parse(precio);
+      case 'Congelados':
+        congeladosTotal -= int.parse(precio);
+      case 'Bebidas':
+        bebidasTotal -= int.parse(precio);
+      case 'Limpieza':
+        limpiezaTotal -= int.parse(precio);
+      case 'Perfumeria':
+        perfumeriaTotal -= int.parse(precio);
+
+      case 'Suelto':
+        sueltosTotal -= int.parse(precio);
+    }
+
+  }
 
   void addItemToCart(String codigo) async {
     List<Product> lista = await DatabaseHelper.getProductByCodigo(codigo);
@@ -58,14 +111,16 @@ class _CashScreenState extends State<CashScreen> {
     var exists = cart.where((element) => element.codigo == item.codigo);
     if(exists.isNotEmpty){
       addOneMoreToCart(item.codigo, item.precio);
+      addToCategoryTotal(item.categoria, item.precio);
       setState(() {
         calculateTotal();
       });
     }
     else{
+      cantidadProductos++;
+      addToCategoryTotal(item.categoria, item.precio);
       setState(() {
         cart.add(item);
-        cantidadProductos++;
         calculateTotal();
       });
     }
@@ -99,6 +154,7 @@ class _CashScreenState extends State<CashScreen> {
     final index = cart.indexWhere((item) => item.codigo == codigo );
 
     int nuevoPrecio = int.parse(cart[index].precio) - int.parse(item.precio);
+    minusToCategoryTotal(item.categoria, item.precio);
     cantidadProductos--;
     if(nuevoPrecio == 0){
       cart.removeWhere((item) => item.codigo == codigo);
