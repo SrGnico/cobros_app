@@ -1,7 +1,7 @@
 import 'package:cobros_app/models/cart.dart';
-import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_product.dart';
+import 'package:cobros_app/services/database_record.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
 import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:cobros_app/widgets/cart/product_list.dart';
@@ -19,30 +19,68 @@ class CashScreen extends StatefulWidget {
 
 class _CashScreenState extends State<CashScreen> {
 
-  void addCartToRecord(){
+  void addCartToRecord()async {
     int day = DateTime.now().day;
     int month = DateTime.now().month;
     int year = DateTime.now().year;
     String date = '$day/$month/$year';
 
-    calculateTotal();
+    List<Cart>? actualCart = await DatabaseRecord.getRecordByDate(date);
+
+    if(actualCart != null){
+
+      setState(() {
+        
+      });
+
+      Cart item = actualCart[0];
+
+      Cart newCart = Cart(
+        fecha: date, 
+        cantidadVentas: (int.parse(item.cantidadVentas) + 1 ).toString(), 
+        total: (int.parse(item.total) + total).toString(), 
+        totalTransferencia: (int.parse(item.totalTransferencia) + totalTransferencia).toString(), 
+        totalEfectivo: (int.parse(item.totalEfectivo) + totalEfectivo).toString(), 
+        cantidadProductos: (int.parse(item.cantidadProductos) + cantidadProductos).toString(), 
+        almacenTotal: (int.parse(item.almacenTotal) + almacenTotal).toString(), 
+        lacteosTotal: (int.parse(item.lacteosTotal) + lacteosTotal).toString(), 
+        congeladosTotal: (int.parse(item.congeladosTotal) + congeladosTotal).toString(), 
+        bebidasTotal: (int.parse(item.bebidasTotal) + bebidasTotal).toString(), 
+        limpiezaTotal: (int.parse(item.limpiezaTotal) + limpiezaTotal).toString(), 
+        perfumeriaTotal: (int.parse(item.perfumeriaTotal) + perfumeriaTotal).toString(), 
+        sueltosTotal: (int.parse(item.sueltosTotal) + sueltosTotal).toString(), 
+      );
+
+      DatabaseRecord.updateRecord(newCart);
+    }
+
+    else{
+
+      setState(() {
+        
+      });
+
+       Cart newCart = Cart(
+        fecha: date, 
+        cantidadVentas: '1', 
+        total: total.toString(), 
+        totalTransferencia: totalTransferencia.toString(), 
+        totalEfectivo: totalEfectivo.toString(), 
+        cantidadProductos: cantidadProductos.toString(), 
+        almacenTotal: almacenTotal.toString(), 
+        lacteosTotal: lacteosTotal.toString(), 
+        congeladosTotal: congeladosTotal.toString(), 
+        bebidasTotal: bebidasTotal.toString(), 
+        limpiezaTotal: limpiezaTotal.toString(), 
+        perfumeriaTotal: perfumeriaTotal.toString(), 
+        sueltosTotal: sueltosTotal.toString()
+      );
+
+      DatabaseRecord.addRecord(newCart);
+
+    }
 
 
-    Cart newCart = Cart(
-    fecha: date, 
-    cantidadVentas: '1', 
-    total: total.toString(), 
-    totalTransferencia: '', 
-    totalEfectivo: '', 
-    cantidadProductos: cantidadProductos.toString(), 
-    almacenTotal: '', 
-    lacteosTotal: '', 
-    congeladosTotal: '', 
-    bebidasTotal: '', 
-    limpiezaTotal: '', 
-    perfumeriaTotal: '', 
-    sueltosTotal: ''
-  );
 
   }
 
@@ -50,6 +88,8 @@ class _CashScreenState extends State<CashScreen> {
   int total = 0;
   List<Product> cart = [];
   List<String> editingList = [];
+  int totalTransferencia = 0;
+  int totalEfectivo = 0;
   int cantidadProductos = 0;
   int almacenTotal = 0;
   int lacteosTotal = 0;
@@ -75,7 +115,6 @@ class _CashScreenState extends State<CashScreen> {
         limpiezaTotal += int.parse(precio);
       case 'Perfumeria':
         perfumeriaTotal += int.parse(precio);
-
       case 'Suelto':
         sueltosTotal += int.parse(precio);
     }
@@ -284,13 +323,19 @@ class _CashScreenState extends State<CashScreen> {
               actions: [
                 TextButton.icon(
                   icon: const Icon(Icons.phone_android_rounded),
-                  onPressed: (){}, 
+                  onPressed: (){
+                    totalTransferencia = total;
+                    addCartToRecord();
+                  }, 
                   label: const Text('Transferencia'),
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
                 ),
                 TextButton.icon(
                   icon: const Icon(Icons.payments_rounded),
-                  onPressed: (){}, 
+                  onPressed: (){
+                    totalEfectivo = total;
+                    addCartToRecord();
+                  }, 
                   label: const Text('Efectivo'),
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
                 )
