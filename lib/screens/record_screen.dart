@@ -53,72 +53,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 context: context,
                 builder: (context) =>AlertDialog(
                   title: const Text('Filtrar o buscar'),
-                  content: SingleChildScrollView(
-                    child: SizedBox(
-                      height:height/2,
-                      width: width,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(
-                              width: width,
-                              child: TextField(
-                                controller: null, //_search,
-                                onSubmitted: (value){ 
-                                  // getProductBySearch()
-                                },
-                                textInputAction: TextInputAction.search,
-                                decoration: InputDecoration(
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                                    child: IconButton(
-                                      onPressed:(){
-                                        //getProductBySearch(),
-
-                                        },
-                                      icon: const Icon(Icons.search_rounded)),
-                                  ),
-                                  border:const  OutlineInputBorder(),
-                                  label: const Text('Buscar'),
-                                ),
-                              ),
-                            ),
-                            const Divider(),
-                            const Text('Filtrar por categoria',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20
-                            ),
-                            ),
-                            ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: null , //categorias.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const SizedBox();
-                                /*
-                                return RadioListTile<String>(
-                                  value: categorias[index].toString(), 
-                                  title: Text(categorias[index].toString()),
-                                  groupValue: selectedCategoria, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      selectedCategoria = value!;
-                                      list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
-                                    });
-                                    context.pop();
-                                  }
-                                );
-                                */
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ), 
+                  content: const Text('AVE'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: (){
@@ -143,13 +78,6 @@ class _RecordScreenState extends State<RecordScreen> {
         ],
       ),
       body: RecordList(list: list),
-      floatingActionButton: 
-      IconButton(
-        icon: Icon(Icons.face),
-        onPressed:(){
-
-        } ,
-        ),
       bottomNavigationBar:const  BottomBar(currentPage: 0),
     );
   }
