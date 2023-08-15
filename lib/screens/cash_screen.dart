@@ -99,6 +99,21 @@ class _CashScreenState extends State<CashScreen> {
   int perfumeriaTotal = 0;
   int sueltosTotal = 0;
 
+  void resetEverything(){
+    total = 0;
+    cart = [];
+    editingList = [];
+    totalTransferencia = 0;
+    totalEfectivo = 0;
+    cantidadProductos = 0;
+    almacenTotal = 0;
+    lacteosTotal = 0;
+    congeladosTotal = 0;
+    bebidasTotal = 0;
+    limpiezaTotal = 0;
+    perfumeriaTotal = 0;
+    sueltosTotal = 0;
+  }
 
   void addToCategoryTotal(String category, String precio){
 
@@ -326,6 +341,7 @@ class _CashScreenState extends State<CashScreen> {
                   onPressed: (){
                     totalTransferencia = total;
                     addCartToRecord();
+                    resetEverything();
                   }, 
                   label: const Text('Transferencia'),
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
@@ -335,6 +351,8 @@ class _CashScreenState extends State<CashScreen> {
                   onPressed: (){
                     totalEfectivo = total;
                     addCartToRecord();
+                    resetEverything();
+
                   }, 
                   label: const Text('Efectivo'),
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
