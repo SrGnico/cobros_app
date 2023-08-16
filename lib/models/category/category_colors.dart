@@ -12,4 +12,14 @@ class CategoryColor {
     'Suelto':Colors.blue
   };
 
+  static final List<Color> list = [
+    Colors.red,
+    Colors.lightBlue,
+    Colors.indigo,
+    Colors.orange,
+    Colors.purple,
+    Colors.green,
+    Colors.blue
+  ];
+
 }

@@ -204,7 +204,8 @@ class _CashScreenState extends State<CashScreen> {
 
       Cart item = actualCart[0];
 
-      print(item.total);
+      print(cantidadProductos);
+
 
       Cart newCart = Cart(
         fecha: date, 
