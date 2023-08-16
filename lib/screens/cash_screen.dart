@@ -115,9 +115,9 @@ class _CashScreenState extends State<CashScreen> {
       });
     }
     else{
-      cantidadProductos++;
       addToCategoryTotal(item.categoria, item.precio);
       setState(() {
+        cantidadProductos++;  
         cart.add(item);
         calculateTotal();
       });
@@ -127,6 +127,7 @@ class _CashScreenState extends State<CashScreen> {
 
   void calculateTotal(){
     total = 0;
+    print(cantidadProductos);
     for(int i = 0; i < cart.length; i++){
       total += int.parse(cart[i].precio);
     }
@@ -135,14 +136,13 @@ class _CashScreenState extends State<CashScreen> {
   void addOneMoreToCart(String codigo, String precioOriginal){
     final index = cart.indexWhere((item) => item.codigo == codigo );
     int nuevoPrecio = int.parse(cart[index].precio) + int.parse(precioOriginal);
+    cantidadProductos++;
     cart[index] = Product(
       codigo: cart[index].codigo, 
       descripcion: cart[index].descripcion, 
       categoria: cart[index].categoria, 
       precio: nuevoPrecio.toString(),
     );
-   cantidadProductos++;
-
   }
 
    void removeOneMoreFromCart(String codigo) async{
@@ -204,7 +204,6 @@ class _CashScreenState extends State<CashScreen> {
 
       Cart item = actualCart[0];
 
-      print(cantidadProductos);
 
 
       Cart newCart = Cart(
@@ -250,12 +249,8 @@ class _CashScreenState extends State<CashScreen> {
         perfumeriaTotal: perfumeriaTotal.toString(), 
         sueltosTotal: sueltosTotal.toString()
       );
-
       DatabaseRecord.addRecord(newCart);
-
     }
-
-
 
   }
 
@@ -350,11 +345,11 @@ class _CashScreenState extends State<CashScreen> {
               actions: [
                 TextButton.icon(
                   icon: const Icon(Icons.phone_android_rounded),
-                  onPressed: (){
+                  onPressed: ()async{
                     if(cart.isNotEmpty){
                       totalTransferencia = total;
-                      addCartToRecord();
-                      resetEverything();
+                      await addCartToRecord();
+                      await resetEverything();
                     }
                   }, 
                   label: const Text('Transferencia'),
@@ -368,7 +363,6 @@ class _CashScreenState extends State<CashScreen> {
                       await addCartToRecord();
                       await resetEverything();
                     }
-
                   }, 
                   label: const Text('Efectivo'),
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
