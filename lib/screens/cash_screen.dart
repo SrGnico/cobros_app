@@ -19,76 +19,6 @@ class CashScreen extends StatefulWidget {
 
 class _CashScreenState extends State<CashScreen> {
 
-  void addCartToRecord()async {
-    int day = DateTime.now().day;
-    int month = DateTime.now().month;
-    int year = DateTime.now().year;
-    String date = '$day/$month/$year';
-
-    List<Cart>? actualCart = await DatabaseRecord.getRecordByDate(date);
-
-    if(actualCart != null){
-
-      if(actualCart.isNotEmpty){
-
-        setState(() {
-        
-      });
-
-      Cart item = actualCart[0];
-
-      Cart newCart = Cart(
-        fecha: date, 
-        cantidadVentas: (int.parse(item.cantidadVentas) + 1 ).toString(), 
-        total: (int.parse(item.total) + total).toString(), 
-        totalTransferencia: (int.parse(item.totalTransferencia) + totalTransferencia).toString(), 
-        totalEfectivo: (int.parse(item.totalEfectivo) + totalEfectivo).toString(), 
-        cantidadProductos: (int.parse(item.cantidadProductos) + cantidadProductos).toString(), 
-        almacenTotal: (int.parse(item.almacenTotal) + almacenTotal).toString(), 
-        lacteosTotal: (int.parse(item.lacteosTotal) + lacteosTotal).toString(), 
-        congeladosTotal: (int.parse(item.congeladosTotal) + congeladosTotal).toString(), 
-        bebidasTotal: (int.parse(item.bebidasTotal) + bebidasTotal).toString(), 
-        limpiezaTotal: (int.parse(item.limpiezaTotal) + limpiezaTotal).toString(), 
-        perfumeriaTotal: (int.parse(item.perfumeriaTotal) + perfumeriaTotal).toString(), 
-        sueltosTotal: (int.parse(item.sueltosTotal) + sueltosTotal).toString(), 
-      );
-
-      DatabaseRecord.updateRecord(newCart);
-
-
-      }
-      
-    }
-
-    else{
-
-      setState(() {
-        
-      });
-
-       Cart newCart = Cart(
-        fecha: date, 
-        cantidadVentas: '1', 
-        total: total.toString(), 
-        totalTransferencia: totalTransferencia.toString(), 
-        totalEfectivo: totalEfectivo.toString(), 
-        cantidadProductos: cantidadProductos.toString(), 
-        almacenTotal: almacenTotal.toString(), 
-        lacteosTotal: lacteosTotal.toString(), 
-        congeladosTotal: congeladosTotal.toString(), 
-        bebidasTotal: bebidasTotal.toString(), 
-        limpiezaTotal: limpiezaTotal.toString(), 
-        perfumeriaTotal: perfumeriaTotal.toString(), 
-        sueltosTotal: sueltosTotal.toString()
-      );
-
-      DatabaseRecord.addRecord(newCart);
-
-    }
-
-
-
-  }
 
 
   int total = 0;
@@ -105,7 +35,7 @@ class _CashScreenState extends State<CashScreen> {
   int perfumeriaTotal = 0;
   int sueltosTotal = 0;
 
-  void resetEverything(){
+  resetEverything(){
     total = 0;
     cart = [];
     editingList = [];
@@ -169,6 +99,11 @@ class _CashScreenState extends State<CashScreen> {
 
   void addItemToCart(String codigo) async {
     List<Product> lista = await DatabaseHelper.getProductByCodigo(codigo);
+
+    if(lista.isEmpty){
+      return;
+    }
+
     Product item = lista[0];
 
     var exists = cart.where((element) => element.codigo == item.codigo);
@@ -254,6 +189,73 @@ class _CashScreenState extends State<CashScreen> {
       setState(() {});
     }
     editingList.remove(codigo);
+  }
+
+  addCartToRecord()async {
+    int day = DateTime.now().day;
+    int month = DateTime.now().month;
+    int year = DateTime.now().year;
+    String date = '$day/$month/$year';
+
+    List<Cart>? actualCart = await DatabaseRecord.getRecordByDate(date);
+
+    if(actualCart!.isNotEmpty){
+      print('if');
+
+      Cart item = actualCart[0];
+
+      print(item.total);
+
+      Cart newCart = Cart(
+        fecha: date, 
+        cantidadVentas: (int.parse(item.cantidadVentas) + 1 ).toString(), 
+        total: (int.parse(item.total) + total).toString(), 
+        totalTransferencia: (int.parse(item.totalTransferencia) + totalTransferencia).toString(), 
+        totalEfectivo: (int.parse(item.totalEfectivo) + totalEfectivo).toString(), 
+        cantidadProductos: (int.parse(item.cantidadProductos) + cantidadProductos).toString(), 
+        almacenTotal: (int.parse(item.almacenTotal) + almacenTotal).toString(), 
+        lacteosTotal: (int.parse(item.lacteosTotal) + lacteosTotal).toString(), 
+        congeladosTotal: (int.parse(item.congeladosTotal) + congeladosTotal).toString(), 
+        bebidasTotal: (int.parse(item.bebidasTotal) + bebidasTotal).toString(), 
+        limpiezaTotal: (int.parse(item.limpiezaTotal) + limpiezaTotal).toString(), 
+        perfumeriaTotal: (int.parse(item.perfumeriaTotal) + perfumeriaTotal).toString(), 
+        sueltosTotal: (int.parse(item.sueltosTotal) + sueltosTotal).toString(), 
+      );
+
+      DatabaseRecord.updateRecord(newCart);
+      
+    }
+
+    else{
+      print('else');
+
+      print(total);
+      setState(() {
+        
+      });
+
+       Cart newCart = Cart(
+        fecha: date, 
+        cantidadVentas: '1', 
+        total: total.toString(), 
+        totalTransferencia: totalTransferencia.toString(), 
+        totalEfectivo: totalEfectivo.toString(), 
+        cantidadProductos: cantidadProductos.toString(), 
+        almacenTotal: almacenTotal.toString(), 
+        lacteosTotal: lacteosTotal.toString(), 
+        congeladosTotal: congeladosTotal.toString(), 
+        bebidasTotal: bebidasTotal.toString(), 
+        limpiezaTotal: limpiezaTotal.toString(), 
+        perfumeriaTotal: perfumeriaTotal.toString(), 
+        sueltosTotal: sueltosTotal.toString()
+      );
+
+      DatabaseRecord.addRecord(newCart);
+
+    }
+
+
+
   }
 
 
@@ -359,11 +361,11 @@ class _CashScreenState extends State<CashScreen> {
                 ),
                 TextButton.icon(
                   icon: const Icon(Icons.payments_rounded),
-                  onPressed: (){
+                  onPressed: ()async {
                     if(cart.isNotEmpty){
                       totalEfectivo = total;
-                      addCartToRecord();
-                      resetEverything();
+                      await addCartToRecord();
+                      await resetEverything();
                     }
 
                   }, 

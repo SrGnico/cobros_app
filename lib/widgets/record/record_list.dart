@@ -1,4 +1,5 @@
 import 'package:cobros_app/models/cart.dart';
+import 'package:cobros_app/widgets/record/record_item.dart';
 import 'package:flutter/material.dart';
 
 class RecordList extends StatelessWidget {
@@ -28,8 +29,7 @@ class RecordList extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final item = snapshot.data![index];
-                    //Todo implement item to return
-                    return;
+                    return RecordItem(cart:item);
                   },
                 );
               }

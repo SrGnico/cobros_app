@@ -52,12 +52,6 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-
-  @override
   Widget build(BuildContext context) {
 
     double width = MediaQuery.of(context).size.width;
