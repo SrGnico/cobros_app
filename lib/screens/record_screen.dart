@@ -16,7 +16,7 @@ class _RecordScreenState extends State<RecordScreen> {
 
   Future<List<Cart>?> list = DatabaseRecord.getAllRecords();
   DateTime selectedDate = DateTime.now();
-  String title = 'Todo';
+  String title = 'Todos';
   
   _selectDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(
@@ -39,7 +39,7 @@ class _RecordScreenState extends State<RecordScreen> {
   }
   if(picked == null){
     setState(() {
-      title = 'Todo';
+      title = 'Todos';
       list = DatabaseRecord.getAllRecords();
     });
   }
