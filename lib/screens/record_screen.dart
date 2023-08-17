@@ -21,7 +21,11 @@ class _RecordScreenState extends State<RecordScreen> {
   _selectDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(
     context: context,
+    helpText: 'Seleccione una fecha',
+    cancelText: 'Limpiar',
+    confirmText: 'Aplicar',
     initialDate: selectedDate, 
+    initialEntryMode: DatePickerEntryMode.calendarOnly,
     firstDate: DateTime(2023),
     lastDate: DateTime(2030),
     
