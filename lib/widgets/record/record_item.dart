@@ -1,7 +1,6 @@
 import 'package:cobros_app/models/cart.dart';
 import 'package:cobros_app/models/category.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 
@@ -54,6 +53,28 @@ class _RecordItemState extends State<RecordItem> {
         ),
       ),
       children: [
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('\$ ${widget.cart.totalEfectivo} en efectivo',
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              color: Colors.blueGrey
+              ),
+            ),
+            Text('\$ ${widget.cart.totalTransferencia} en transferencia',
+             style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              color: Colors.blueGrey
+              ),
+            ),
+          ],
+        ),
+        const Divider(),
+
         PieChart(
           colorList: CategoryColor.list,
           dataMap: chartMap,

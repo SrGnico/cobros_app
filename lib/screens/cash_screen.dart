@@ -19,8 +19,6 @@ class CashScreen extends StatefulWidget {
 
 class _CashScreenState extends State<CashScreen> {
 
-
-
   int total = 0;
   List<Product> cart = [];
   List<String> editingList = [];
@@ -34,6 +32,8 @@ class _CashScreenState extends State<CashScreen> {
   int limpiezaTotal = 0;
   int perfumeriaTotal = 0;
   int sueltosTotal = 0;
+
+  bool shouldPop = false;
 
   resetEverything(){
     total = 0;
@@ -127,7 +127,6 @@ class _CashScreenState extends State<CashScreen> {
 
   void calculateTotal(){
     total = 0;
-    print(cantidadProductos);
     for(int i = 0; i < cart.length; i++){
       total += int.parse(cart[i].precio);
     }
@@ -200,11 +199,7 @@ class _CashScreenState extends State<CashScreen> {
     List<Cart>? actualCart = await DatabaseRecord.getRecordByDate(date);
 
     if(actualCart!.isNotEmpty){
-      print('if');
-
       Cart item = actualCart[0];
-
-
 
       Cart newCart = Cart(
         fecha: date, 
@@ -227,9 +222,6 @@ class _CashScreenState extends State<CashScreen> {
     }
 
     else{
-      print('else');
-
-      print(total);
       setState(() {
         
       });
@@ -282,7 +274,7 @@ class _CashScreenState extends State<CashScreen> {
             ),
           ],
         ),
-
+    
         actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0,50,10,0),
@@ -328,7 +320,7 @@ class _CashScreenState extends State<CashScreen> {
           ),
         ],
       ),
-
+    
       body:ProductList(
         title: 'Carrito', 
         list: cart,
@@ -399,7 +391,7 @@ class _CashScreenState extends State<CashScreen> {
           trueColor: Colors.white, 
           falseColor: Colors.white
         ),
-
+    
       bottomNavigationBar: const BottomBar(currentPage: 1),
     );
   }
