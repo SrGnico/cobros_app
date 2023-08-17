@@ -66,7 +66,7 @@ class DatabaseHelper {
 
     final db = await _getDB();
 
-    final List<Map<String, dynamic>> maps = await db.query('Productos');
+    final List<Map<String, dynamic>> maps = await db.query('Productos',orderBy: 'codigo DESC');
 
     if(maps.isEmpty){return null;}
 

@@ -65,7 +65,7 @@ class DatabaseRecord{
   static Future<List<Cart>?> getAllRecords() async{
     final db = await _getDB();
 
-    final List<Map<String, dynamic>> maps = await db.query('Registros');
+    final List<Map<String, dynamic>> maps = await db.query('Registros', orderBy:'fecha DESC');
 
     if(maps.isEmpty){return null;}
 

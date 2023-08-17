@@ -49,19 +49,15 @@ class _RecordScreenState extends State<RecordScreen> {
               style: IconButton.styleFrom(backgroundColor: Colors.teal),
               onPressed: () => showDialog(
                 context: context,
-                builder: (context) =>AlertDialog(
-                  title: const Text('Filtrar o buscar'),
-                  content: const Text('AVE'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: (){
-                      },
-                      child: const Text('Limpiar filtros'),
-                    ),
-                   
-                  ],
-                )
-                
+                //todo Funciona esto? no se como handlear el input
+                builder: (context) => DatePickerDialog(
+                   initialDate: DateTime.now(),
+                    firstDate: DateTime(2023),
+                    lastDate: DateTime(2030),
+                    cancelText: 'Cancelar',
+                    confirmText: 'Listo',
+                    helpText: 'Buscar por fecha',
+                  ),
               ),
               icon: const Padding(
                 padding: EdgeInsets.all(5.0),
@@ -69,6 +65,7 @@ class _RecordScreenState extends State<RecordScreen> {
                   Icons.sort_by_alpha_rounded,
                   color: Colors.white,
                   size: 65,
+
                 ),
               )
             ),
