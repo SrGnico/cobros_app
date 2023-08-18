@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:animate_do/animate_do.dart';
 import 'package:cobros_app/models/cart.dart';
+import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_product.dart';
 import 'package:cobros_app/services/database_record.dart';
@@ -34,6 +38,8 @@ class _CashScreenState extends State<CashScreen> {
   int sueltosTotal = 0;
 
   bool shouldPop = false;
+
+  var precioManual = TextEditingController();
 
   resetEverything(){
     total = 0;
@@ -133,18 +139,25 @@ class _CashScreenState extends State<CashScreen> {
   }
 
   void addOneMoreToCart(String codigo, String precioOriginal){
+    if(int.parse(codigo) < 100){return;}
     final index = cart.indexWhere((item) => item.codigo == codigo );
     int nuevoPrecio = int.parse(cart[index].precio) + int.parse(precioOriginal);
     cantidadProductos++;
     cart[index] = Product(
       codigo: cart[index].codigo, 
-      descripcion: cart[index].descripcion, 
+      descripcion: cart[index].descripcion.contains('×')
+      ? '${(int.parse(cart[index].descripcion.characters.first) + 1 ).toString()}${cart[index].descripcion.substring(1)}  '
+      : '2 × ${cart[index].descripcion}', 
       categoria: cart[index].categoria, 
       precio: nuevoPrecio.toString(),
     );
   }
 
    void removeOneMoreFromCart(String codigo) async{
+    if(int.parse(codigo) < 100){ 
+      return;
+    }
+
     List<Product> lista = await DatabaseHelper.getProductByCodigo(codigo);
     Product item = lista[0];
 
@@ -166,7 +179,9 @@ class _CashScreenState extends State<CashScreen> {
     }
     cart[index] = Product(
       codigo: cart[index].codigo, 
-      descripcion: cart[index].descripcion, 
+      descripcion: cart[index].descripcion.contains('×')
+      ? '${(int.parse(cart[index].descripcion.characters.first) - 1 ).toString()}${cart[index].descripcion.substring(1)}  '
+      : '2 × ${cart[index].descripcion}', 
       categoria: cart[index].categoria, 
       precio: nuevoPrecio.toString(),
     );
@@ -296,6 +311,12 @@ class _CashScreenState extends State<CashScreen> {
               }
               :(){
                 for(int i = 0; i<editingList.length; i++){
+                  if(int.parse(editingList[i]) < 100 ){
+                    var sueltos = cart.where((item)=>item.codigo == editingList[i]);
+                    var suelto = sueltos.first;
+                    minusToCategoryTotal(suelto.categoria, suelto.precio);
+                    cantidadProductos--;
+                  }
                   cart.removeWhere((item) => item.codigo == editingList[i]);
                 }
                 setState(() {
@@ -328,68 +349,137 @@ class _CashScreenState extends State<CashScreen> {
         deleteProductFromEditingList: deleteProductFromEditingList,
         ),
       floatingActionButton: 
-        ConditionalButton(
-          condition: editingList.isEmpty, 
-          trueOnPressed: ()=>showDialog(
-            context: context, 
-            builder: (context) => AlertDialog(
-              title: const Text('Cobrar'),
-              actions: [
-                TextButton.icon(
-                  icon: const Icon(Icons.phone_android_rounded),
-                  onPressed: ()async{
-                    if(cart.isNotEmpty){
-                      totalTransferencia = total;
-                      await addCartToRecord();
-                      await resetEverything();
-                    }
-                  }, 
-                  label: const Text('Transferencia'),
-                  style: IconButton.styleFrom(backgroundColor: Colors.white),
+
+        Stack(
+          children: [
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 100,horizontal: 15),
+                child: FadeInUp(
+                  child: IconButton.filled(
+                    onPressed: ()=>showDialog(
+                      context: context, 
+                      builder: (context) => AlertDialog(
+                        title: const Text('Agregar Producto Manual'),
+                        content: TextField(
+                          controller: precioManual,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: '350',
+                            label: Text('Precio'),
+                          ),
+                        ),
+                        actions: [
+                          TextButton.icon(
+                            icon: const Icon(Icons.add_rounded),
+                            onPressed: (){
+                              if(precioManual.text.isNotEmpty){
+                                Product manual = Product(
+                                  codigo: Random().nextInt(100).toString(), 
+                                  descripcion: 'Suelto', 
+                                  categoria: Category.categorias[6], 
+                                  precio: precioManual.text
+                                );
+
+                                setState(() {
+                                  cart.add(manual);
+                                  cantidadProductos++;
+                                  addToCategoryTotal(manual.categoria, manual.precio);
+                                  calculateTotal();
+                                  precioManual.text = '';
+                                  context.pop();
+                                });
+                              }
+                            }, 
+                            label: const Text('Agregar'),
+                            style: IconButton.styleFrom(backgroundColor: Colors.white),
+                          )
+                        ],
+                      )
+                    ), 
+                    icon: const Icon(
+                      Icons.edit_note_rounded,
+                      size: 45,
+                    ),
+                    style: IconButton.styleFrom(backgroundColor: Colors.teal.shade900),
+                  ),
                 ),
-                TextButton.icon(
-                  icon: const Icon(Icons.payments_rounded),
-                  onPressed: ()async {
-                    if(cart.isNotEmpty){
-                      totalEfectivo = total;
-                      await addCartToRecord();
-                      await resetEverything();
-                    }
-                  }, 
-                  label: const Text('Efectivo'),
-                  style: IconButton.styleFrom(backgroundColor: Colors.white),
-                )
-              ],
-            )
-          ), 
-          falseOnPressed: ()=>showDialog(
-            context: context, 
-            builder: (context)=> AlertDialog(
-              title: const Text('Modificar cantidad'),
-              actions: [
-                IconButton.filled(
-                  onPressed: (){
-                    for(int i = 0; i<editingList.length; i++){
-                    removeOneMoreFromCart(editingList[i]);
-                    }
-                  }, 
-                  icon: const Icon(Icons.exposure_minus_1_rounded),
-                ),
-                IconButton.filled(
-                  onPressed: (){
-                    for(int i = 0; i<editingList.length; i++){
-                      addItemToCart(editingList[i]);
-                    }
-                  }, 
-                  icon: const Icon(Icons.plus_one_rounded),
-                ),
-              ],
-            )
-          ), 
-          trueIcon: Icons.shopping_cart_checkout_rounded, 
-          falseIcon: Icons.edit_rounded, 
-          trueColor: Colors.white, 
-          falseColor: Colors.white
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: ConditionalButton(
+                condition: editingList.isEmpty, 
+                trueOnPressed: ()=>showDialog(
+                  context: context, 
+                  builder: (context) => AlertDialog(
+                    title: const Text('Cobrar'),
+                    actions: [
+                      TextButton.icon(
+                        icon: const Icon(Icons.phone_android_rounded),
+                        onPressed: ()async{
+                          if(cart.isNotEmpty){
+                            totalTransferencia = total;
+                            await addCartToRecord();
+                            await resetEverything();
+                          }
+                        }, 
+                        label: const Text('Transferencia'),
+                        style: IconButton.styleFrom(backgroundColor: Colors.white),
+                      ),
+                      TextButton.icon(
+                        icon: const Icon(Icons.payments_rounded),
+                        onPressed: ()async {
+                          if(cart.isNotEmpty){
+                            totalEfectivo = total;
+                            await addCartToRecord();
+                            await resetEverything();
+                          }
+                        }, 
+                        label: const Text('Efectivo'),
+                        style: IconButton.styleFrom(backgroundColor: Colors.white),
+                      )
+                    ],
+                  )
+                ), 
+                falseOnPressed: ()=>showDialog(
+                  context: context, 
+                  builder: (context)=> 
+                  editingList.any((element) => int.parse(element) > 100)
+                  ?AlertDialog(
+                    title: const Text('Modificar cantidad'),
+                    actions: [
+                      IconButton.filled(
+                        onPressed: (){
+                          for(int i = 0; i<editingList.length; i++){
+                          removeOneMoreFromCart(editingList[i]);
+                          }
+                        }, 
+                        icon: const Icon(Icons.exposure_minus_1_rounded),
+                      ),
+                      IconButton.filled(
+                        onPressed: (){
+                          for(int i = 0; i<editingList.length; i++){
+                            addItemToCart(editingList[i]);
+                          }
+                        }, 
+                        icon: const Icon(Icons.plus_one_rounded),
+                      ),
+                    ],
+                  )
+                  :const AlertDialog(
+                    title: Text('No se puede modificar productos sueltos'),
+                  )
+                ), 
+                trueIcon: Icons.shopping_cart_checkout_rounded, 
+                falseIcon: Icons.edit_rounded, 
+                trueColor: Colors.white, 
+                falseColor: Colors.white
+              ),
+            ),
+          ],
         ),
     
       bottomNavigationBar: const BottomBar(currentPage: 1),
