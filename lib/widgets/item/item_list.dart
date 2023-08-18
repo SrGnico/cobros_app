@@ -62,7 +62,7 @@ class _ItemListState extends State<ItemList> {
                   },
                   child: SizedBox(
                     width: (MediaQuery.of(context).size.width - 36) ,
-                    height: 52,
+                    height: 60,
                     child: Row(
                       children: [
                         InkWell(
@@ -96,23 +96,31 @@ class _ItemListState extends State<ItemList> {
                         const SizedBox(width: 5),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width/1.8),
+                          height: 60,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(widget.product.descripcion,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 25
-                                ),
+                              Flexible(
+                                flex: 1,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  padding: EdgeInsets.zero,
+                                  child: Text(widget.product.descripcion,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20
+                                  ),
+                                  ),
                                 ),
                               ),
-                              Text(widget.product.categoria,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 20
-                              ),  
+                              Flexible(
+                                flex: 1,
+                                child: Text(widget.product.categoria,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 18
+                                ),  
+                                ),
                               )
                             ],
                           ),
