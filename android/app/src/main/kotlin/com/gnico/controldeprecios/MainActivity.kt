@@ -1,4 +1,4 @@
-package com.example.cobros_app
+package com.gnico.controldeprecios
 
 import io.flutter.embedding.android.FlutterActivity
 
