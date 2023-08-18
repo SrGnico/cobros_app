@@ -107,6 +107,16 @@ class _CashScreenState extends State<CashScreen> {
     List<Product> lista = await DatabaseHelper.getProductByCodigo(codigo);
 
     if(lista.isEmpty){
+      if(context.mounted){
+        showDialog(
+        context: context, 
+        builder: (context)=> const AlertDialog(
+          title: Text('No se ha encontrado resultado'),
+          content: Text('Podes agregar el precio como suelto o agregar el producto en la base de datos!'),
+        )
+      );
+      }
+      
       return;
     }
 
