@@ -6,6 +6,7 @@ import 'package:cobros_app/models/category.dart';
 import 'package:cobros_app/models/product.dart';
 import 'package:cobros_app/services/database_product.dart';
 import 'package:cobros_app/services/database_record.dart';
+import 'package:cobros_app/widgets/appbar/custom_app_bar.dart';
 import 'package:cobros_app/widgets/bottom_bar.dart';
 import 'package:cobros_app/widgets/button/conditional_button.dart';
 import 'package:cobros_app/widgets/cart/product_list.dart';
@@ -275,35 +276,10 @@ class _CashScreenState extends State<CashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        toolbarHeight: 150,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Cobros',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              '\$ $total',
-              maxLines: 1,
-              style: const TextStyle(
-                fontSize: 80,
-                fontWeight: FontWeight.w500
-              ),
-            ),
-          ],
-        ),
-    
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0,50,10,0),
-            child: IconButton(
+      appBar: CustomAppBar(
+        title: 'Cobro', 
+        subTitle: '\$ $total', 
+        actions: IconButton(
               style: IconButton.styleFrom(backgroundColor: Colors.teal),
               onPressed: editingList.isEmpty
               ?() async {
@@ -348,8 +324,6 @@ class _CashScreenState extends State<CashScreen> {
                 ),
               )
             ),
-          ),
-        ],
       ),
     
       body:ProductList(
