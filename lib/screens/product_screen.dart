@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductScreen extends StatefulWidget {
-
   const ProductScreen({super.key});
 
   @override
@@ -16,7 +15,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-
   final categorias = Category.categorias;
   String selectedCategoria = '';
 
@@ -27,8 +25,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   List<String> editingList = [];
 
-
-  void getProductBySearch(){
+  void getProductBySearch() {
     setState(() {
       list = DatabaseHelper.getProductBySearch(_search.text);
       selectedCategoria = _search.text;
@@ -37,15 +34,15 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
-  void addProductToEditingList(String codigo){
+  void addProductToEditingList(String codigo) {
     editingList.add(codigo);
-    if(editingList.length == 1){
+    if (editingList.length == 1) {
       setState(() {});
     }
   }
 
-  void deleteProductFromEditingList(String codigo){
-    if(editingList.length == 1){
+  void deleteProductFromEditingList(String codigo) {
+    if (editingList.length == 1) {
       setState(() {});
     }
     editingList.remove(codigo);
@@ -53,7 +50,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -76,112 +72,119 @@ class _ProductScreenState extends State<ProductScreen> {
               selectedCategoria == '' ? 'Todos' : selectedCategoria,
               maxLines: 1,
               style: const TextStyle(
-                fontSize: 80,
-                fontWeight: FontWeight.w500
+                fontSize: 60,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0,50,10,0),
+            padding: const EdgeInsets.fromLTRB(0, 50, 10, 0),
             child: IconButton(
-              style: IconButton.styleFrom(backgroundColor: Colors.teal),
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) =>AlertDialog(
-                  title: const Text('Filtrar o buscar'),
-                  content: SingleChildScrollView(
-                    child: SizedBox(
-                      height:height/ 2,
-                      width: width,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(
+                style: IconButton.styleFrom(backgroundColor: Colors.teal),
+                onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text('Filtrar o buscar'),
+                          content: SingleChildScrollView(
+                            child: SizedBox(
+                              height: height / 2,
                               width: width,
-                              child: TextField(
-                                controller: _search,
-                                onSubmitted: (value) => getProductBySearch(),
-                                textInputAction: TextInputAction.search,
-                                decoration: InputDecoration(
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                                    child: IconButton(
-                                      onPressed:()=> getProductBySearch(),
-                                      icon: const Icon(Icons.search_rounded)),
-                                  ),
-                                  border:const  OutlineInputBorder(),
-                                  label: const Text('Buscar'),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    SizedBox(
+                                      width: width,
+                                      child: TextField(
+                                        controller: _search,
+                                        onSubmitted: (value) =>
+                                            getProductBySearch(),
+                                        textInputAction: TextInputAction.search,
+                                        decoration: InputDecoration(
+                                          suffixIcon: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 3),
+                                            child: IconButton(
+                                                onPressed: () =>
+                                                    getProductBySearch(),
+                                                icon: const Icon(
+                                                    Icons.search_rounded)),
+                                          ),
+                                          border: const OutlineInputBorder(),
+                                          label: const Text('Buscar'),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    const Text(
+                                      'Filtrar por categoria',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 20),
+                                    ),
+                                    SingleChildScrollView(
+                                      child: SizedBox(
+                                        height: height / 2.75,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: categorias.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return RadioListTile<String>(
+                                                value: categorias[index]
+                                                    .toString(),
+                                                title: Text(categorias[index]
+                                                    .toString()),
+                                                groupValue: selectedCategoria,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedCategoria = value!;
+                                                    list = DatabaseHelper
+                                                        .getProductByCategoria(
+                                                            selectedCategoria
+                                                                .toString());
+                                                  });
+                                                  context.pop();
+                                                });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                            const Divider(),
-                            const Text('Filtrar por categoria',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20
-                            ),
-                            ),
-                            SingleChildScrollView(
-                              child: SizedBox(
-                                height:height /2.75,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: categorias.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return RadioListTile<String>(
-                                      value: categorias[index].toString(), 
-                                      title: Text(categorias[index].toString()),
-                                      groupValue: selectedCategoria, 
-                                      onChanged: (value){
-                                        setState(() {
-                                          selectedCategoria = value!;
-                                          list = DatabaseHelper.getProductByCategoria(selectedCategoria.toString());
-                                        });
-                                        context.pop();
-                                      }
-                                    );
-                                  },
-                                ),
-                              ),
+                          ),
+                          actions: <Widget>[
+                            TextButton.icon(
+                              icon: const Icon(Icons.cleaning_services_rounded),
+                              onPressed: () {
+                                setState(() {
+                                  _search.text = '';
+                                  selectedCategoria = '';
+                                  list = DatabaseHelper.getAllProducts();
+                                  context.pop();
+                                });
+                              },
+                              label: const Text('Limpiar filtros'),
+                              style: IconButton.styleFrom(
+                                  backgroundColor: Colors.white),
                             ),
                           ],
-                        ),
-                      ),
-                    ),
-                  ), 
-                  actions: <Widget>[
-                    TextButton.icon(
-                      icon: const Icon(Icons.cleaning_services_rounded),
-                      onPressed: (){
-                        setState(() {
-                          _search.text = '';
-                          selectedCategoria = '';
-                          list = DatabaseHelper.getAllProducts();
-                          context.pop();
-                        });
-                      },
-                      label: const Text('Limpiar filtros'),
-                      style: IconButton.styleFrom(backgroundColor: Colors.white),
-                    ),
-                   
-                  ],
-                )
-                
-              ),
-              icon: const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Icon(
-                  Icons.sort_by_alpha_rounded,
-                  color: Colors.white,
-                  size: 65,
-                ),
-              )
-            ),
+                        )),
+                icon: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Icon(
+                    Icons.sort_by_alpha_rounded,
+                    color: Colors.white,
+                    size: 65,
+                  ),
+                )),
           ),
         ],
       ),
@@ -189,16 +192,17 @@ class _ProductScreenState extends State<ProductScreen> {
         list: list,
         addProductToEditingList: addProductToEditingList,
         deleteProductFromEditingList: deleteProductFromEditingList,
-        ),
-      floatingActionButton: 
-        ConditionalButton(
-          condition: editingList.isEmpty, 
-          trueOnPressed: (){
-            Product emptyProduct = Product(codigo: '', descripcion: '', categoria: '', precio: '');
-            context.pushNamed('addOrEdit', extra:emptyProduct);
-          }, 
-          falseOnPressed: (){
-            showDialog(context: context, 
+      ),
+      floatingActionButton: ConditionalButton(
+          condition: editingList.isEmpty,
+          trueOnPressed: () {
+            Product emptyProduct =
+                Product(codigo: '', descripcion: '', categoria: '', precio: '');
+            context.pushNamed('addOrEdit', extra: emptyProduct);
+          },
+          falseOnPressed: () {
+            showDialog(
+              context: context,
               builder: (context) => AlertDialog(
                 title: const Text('Actualizar precios'),
                 content: TextField(
@@ -207,33 +211,32 @@ class _ProductScreenState extends State<ProductScreen> {
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     label: Text('Nuevo precio'),
-                    border:  OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                 ),
                 actions: [
                   TextButton(
-                    onPressed: ()async{
-                      if(_nuevoPrecio.text.isNotEmpty){
-                        await DatabaseHelper.updatePrices(editingList, _nuevoPrecio.text);
-                        setState(() {
-                          _nuevoPrecio.text = '';
-                          editingList = [];
-                          list = DatabaseHelper.getAllProducts();
-                          context.pop();
-                        });
-                      }
-                    }, 
-                    child: const Text('Guardar')
-                  )
+                      onPressed: () async {
+                        if (_nuevoPrecio.text.isNotEmpty) {
+                          await DatabaseHelper.updatePrices(
+                              editingList, _nuevoPrecio.text);
+                          setState(() {
+                            _nuevoPrecio.text = '';
+                            editingList = [];
+                            list = DatabaseHelper.getAllProducts();
+                            context.pop();
+                          });
+                        }
+                      },
+                      child: const Text('Guardar'))
                 ],
               ),
             );
-          }, 
-          trueIcon: Icons.add, 
-          falseIcon: Icons.price_change_rounded, 
-          trueColor: Colors.white, 
-          falseColor: Colors.white
-        ),
+          },
+          trueIcon: Icons.add,
+          falseIcon: Icons.price_change_rounded,
+          trueColor: Colors.white,
+          falseColor: Colors.white),
       bottomNavigationBar: const BottomBar(currentPage: 2),
     );
   }

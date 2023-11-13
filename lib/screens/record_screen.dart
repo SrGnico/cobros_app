@@ -12,42 +12,39 @@ class RecordScreen extends StatefulWidget {
 }
 
 class _RecordScreenState extends State<RecordScreen> {
-
-
   Future<List<Cart>?> list = DatabaseRecord.getAllRecords();
   DateTime selectedDate = DateTime.now();
   String title = 'Todos';
-  
-  _selectDate(BuildContext context) async {
-  final DateTime? picked = await showDatePicker(
-    context: context,
-    helpText: 'Seleccione una fecha',
-    cancelText: 'Limpiar',
-    confirmText: 'Aplicar',
-    initialDate: selectedDate, 
-    initialEntryMode: DatePickerEntryMode.calendarOnly,
-    firstDate: DateTime(2023),
-    lastDate: DateTime(2030),
-    
-  );
-  if (picked != null){
-    setState(() {
-      String selectdDay = picked.day.toString();
-      String selectdMonth = picked.month.toString();
-      String selectdYear = picked.year.toString();
 
-      String searchDate = '$selectdDay/$selectdMonth/$selectdYear';
-      list = DatabaseRecord.getRecordByDate(searchDate);
-      title = searchDate;
-    });
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      helpText: 'Seleccione una fecha',
+      cancelText: 'Limpiar',
+      confirmText: 'Aplicar',
+      initialDate: selectedDate,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null) {
+      setState(() {
+        String selectdDay = picked.day.toString();
+        String selectdMonth = picked.month.toString();
+        String selectdYear = picked.year.toString();
+
+        String searchDate = '$selectdDay/$selectdMonth/$selectdYear';
+        list = DatabaseRecord.getRecordByDate(searchDate);
+        title = searchDate;
+      });
+    }
+    if (picked == null) {
+      setState(() {
+        title = 'Todos';
+        list = DatabaseRecord.getAllRecords();
+      });
+    }
   }
-  if(picked == null){
-    setState(() {
-      title = 'Todos';
-      list = DatabaseRecord.getAllRecords();
-    });
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -69,33 +66,31 @@ class _RecordScreenState extends State<RecordScreen> {
               title,
               maxLines: 1,
               style: const TextStyle(
-                fontSize: 80,
-                fontWeight: FontWeight.w500
+                fontSize: 60,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0,50,10,0),
-            child:IconButton(
-              style: IconButton.styleFrom(backgroundColor: Colors.teal),
-              onPressed: () => _selectDate(context),
-              icon: const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Icon(
-                  Icons.calendar_month_rounded,
-                  color: Colors.white,
-                  size: 65,
-
-                ),
-              )
-            ),
+            padding: const EdgeInsets.fromLTRB(0, 50, 10, 0),
+            child: IconButton(
+                style: IconButton.styleFrom(backgroundColor: Colors.teal),
+                onPressed: () => _selectDate(context),
+                icon: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Icon(
+                    Icons.calendar_month_rounded,
+                    color: Colors.white,
+                    size: 65,
+                  ),
+                )),
           ),
         ],
       ),
       body: RecordList(list: list),
-      bottomNavigationBar:const  BottomBar(currentPage: 0),
+      bottomNavigationBar: const BottomBar(currentPage: 0),
     );
   }
 }

@@ -1,4 +1,4 @@
-package com.gnico.controldeprecios
+package com.gnico.Control_De_Precios
 
 import io.flutter.embedding.android.FlutterActivity
 
